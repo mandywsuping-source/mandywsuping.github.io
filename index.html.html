@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandy Wong — UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-2: #f8f8f7;
+  --border: #e8e8e4;
+  --border-2: #d4d4ce;
+  --text-1: #111110;
+  --text-2: #6b6b66;
+  --text-3: #b4b4ae;
+  --accent: #1a1a1a;
+  --tag-bg: #f0f0ec;
+  --tag-text: #6b6b66;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: 'Geist', -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --turquoise: #2dd4bf;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 60px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-1);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--text-1); }
+
+.nav-cta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--text-1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 40px 40px;
+}
+
+/* Dot grid background */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #d4d4ce 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* Subtle gradient fade at edges */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,255,255,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,255,255,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 100% at 0% 50%, rgba(255,255,255,0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 100% at 100% 50%, rgba(255,255,255,0.7) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-center {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px 6px 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.8); }
+}
+
+.hero-headline {
+  font-size: clamp(24px, 2.8vw, 38px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+.hero-headline .muted { color: #2dd4bf; }
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 480px;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--text-1);
+  color: var(--bg);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.85; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-secondary:hover { background: var(--bg-2); border-color: var(--border-2); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* FLOATING CARDS */
+.floating-cards {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.float-card {
+  position: absolute;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  pointer-events: all;
+  cursor: default;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  animation: floatIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+  user-select: none;
+}
+
+.float-card:hover {
+  transform: translateY(-6px) scale(1.02) !important;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08);
+  z-index: 20;
+}
+
+@keyframes floatIn {
+  from { opacity:0; transform: translateY(20px) scale(0.95); }
+  to { opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* Card 1 - Case study mini card (top left) */
+.card-case {
+  top: 18%;
+  left: 5%;
+  width: 240px;
+  padding: 16px;
+  animation-delay: 0.4s;
+}
+
+.card-case-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+}
+
+.card-case-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.card-case-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.outcome-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.outcome-bar {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.outcome-fill {
+  height: 100%;
+  background: var(--text-1);
+  border-radius: 2px;
+  transition: width 1s ease 0.8s;
+}
+
+.card-case-footer {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-case-company {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+.card-case-arrow {
+  font-size: 14px;
+  color: var(--text-3);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.card-case:hover .card-case-arrow {
+  color: var(--text-1);
+  transform: translate(2px,-2px);
+}
+
+/* Card 2 - Skills/tools (bottom left) */
+.card-skills {
+  bottom: 20%;
+  left: 3%;
+  width: 200px;
+  padding: 14px;
+  animation-delay: 0.55s;
+}
+
+.card-skills-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-2);
+  margin-bottom: 10px;
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-chip {
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.skill-chip:hover, .skill-chip.active {
+  background: var(--text-1);
+  color: var(--bg);
+  border-color: var(--text-1);
+}
+
+/* Card 3 - Stats (top right) */
+.card-stats {
+  top: 15%;
+  right: 5%;
+  width: 220px;
+  padding: 16px;
+  animation-delay: 0.45s;
+}
+
+.card-stats-title {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  margin-bottom: 14px;
+}
+
+.stat-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.03em;
+}
+
+.stat-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-3);
+  margin-left: 2px;
+}
+
+/* Card 4 - Available status (bottom right) */
+.card-status {
+  bottom: 22%;
+  right: 4%;
+  width: 210px;
+  padding: 14px;
+  animation-delay: 0.6s;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.status-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.status-detail {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.status-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.status-tag {
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+
+/* Ambient float animation */
+.card-case { animation: floatIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.4s both; }
+.float-card { animation-fill-mode: both; }
+
+/* Gentle bob */
+@keyframes bob1 { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+@keyframes bob2 { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+
+/* Only bob when not hovered */
+.card-case:not(:hover) { animation: floatIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.4s both, bob1 5s ease-in-out 1.2s infinite; }
+.card-skills:not(:hover) { animation: floatIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.55s both, bob2 6s ease-in-out 1.4s infinite; }
+.card-stats:not(:hover) { animation: floatIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.45s both, bob2 7s ease-in-out 1s infinite; }
+.card-status:not(:hover) { animation: floatIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.6s both, bob1 5.5s ease-in-out 1.6s infinite; }
+
+/* DIVIDER */
+.hero-divider {
+  width: 100%;
+  padding: 0 40px 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-divider-inner {
+  max-width: 1200px;
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+/* WORK SECTION */
+.work-section {
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+}
+
+.section-count {
+  font-size: 13px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+/* Case study cards */
+.cases-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.case-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.case-card:hover {
+  border-color: var(--border-2);
+  box-shadow: var(--shadow-md);
+}
+
+.case-card:hover .case-arrow { transform: translate(3px, -3px); }
+
+.case-body {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.case-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.case-num {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+}
+
+.case-arrow {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text-2);
+  transition: transform 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.case-card:hover .case-arrow {
+  border-color: var(--text-1);
+  color: var(--text-1);
+}
+
+.case-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.case-tag {
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+
+.case-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text-1);
+  margin-bottom: 12px;
+}
+
+.case-excerpt {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+.case-outcomes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.case-outcome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.case-outcome-dot {
+  width: 5px; height: 5px;
+  background: var(--text-3);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.case-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.case-company-badge {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* Case visual panel */
+.case-visual {
+  background: var(--bg-2);
+  border-left: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.case-visual-bg-1 {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+.case-visual-bg-2 {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+.case-visual-bg-3 {
+  background: linear-gradient(135deg, #fdf4ff 0%, #f3e8ff 100%);
+}
+
+/* Mini UI mockups inside visual panels */
+.mini-mockup {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  padding: 14px;
+  width: 220px;
+  font-size: 11px;
+  transition: transform 0.3s ease;
+}
+
+.case-card:hover .mini-mockup {
+  transform: translateY(-4px) rotate(-1deg);
+}
+
+.mockup-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mockup-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.mockup-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.mockup-dot:nth-child(1) { background: #ff5f57; }
+.mockup-dot:nth-child(2) { background: #febc2e; }
+.mockup-dot:nth-child(3) { background: #28c840; }
+
+.mockup-title {
+  font-size: 10px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+/* Mockup 1: Onboarding flow */
+.onboarding-steps { display: flex; flex-direction: column; gap: 6px; }
+.onb-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: var(--bg-2);
+}
+.onb-step.active { background: #f0fdf4; border: 1px solid var(--green-border); }
+.onb-step-num {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 700; color: var(--text-3);
+  flex-shrink: 0;
+}
+.onb-step.active .onb-step-num { background: var(--green); color: white; }
+.onb-step-label { font-size: 10px; color: var(--text-2); }
+.onb-step.active .onb-step-label { color: var(--text-1); font-weight: 500; }
+.onb-step-check { margin-left: auto; font-size: 10px; color: var(--green); }
+
+/* Mockup 2: Inventory/weapon grid */
+.weapon-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin-bottom: 8px; }
+.weapon-slot {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.weapon-slot.compatible { background: #eff6ff; border-color: #bfdbfe; }
+.weapon-slot.selected { background: var(--text-1); border-color: var(--text-1); }
+.weapon-slot.selected .slot-icon { filter: invert(1); }
+.weapon-slot.dimmed { opacity: 0.3; }
+.weapon-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+.weapon-toggle {
+  font-size: 9px;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.weapon-toggle:hover { color: var(--text-1); }
+.toggle-pill {
+  width: 22px; height: 12px;
+  background: var(--border);
+  border-radius: 6px;
+  position: relative;
+  transition: background 0.2s;
+}
+.toggle-pill.on { background: var(--text-1); }
+.toggle-knob {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: left 0.2s;
+}
+.toggle-pill.on .toggle-knob { left: 12px; }
+
+/* Mockup 3: Subscription cards */
+.sub-cards { display: flex; flex-direction: column; gap: 4px; }
+.sub-card {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sub-card.selected { border-color: var(--text-1); background: var(--text-1); }
+.sub-card-label { font-size: 10px; color: var(--text-2); }
+.sub-card.selected .sub-card-label { color: rgba(255,255,255,0.7); }
+.sub-card-price { font-size: 11px; font-weight: 700; color: var(--text-1); }
+.sub-card.selected .sub-card-price { color: white; }
+.sub-card-badge {
+  font-size: 8px;
+  font-weight: 600;
+  background: #dcfce7;
+  color: var(--green);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.sub-card.selected .sub-card-badge { background: rgba(255,255,255,0.2); color: white; }
+
+/* ABOUT */
+.about-section {
+  border-top: 1px solid var(--border);
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.about-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  margin-bottom: 16px;
+}
+
+.about-headline {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: var(--text-1);
+}
+
+.about-body {
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.8;
+}
+
+.about-body p + p { margin-top: 14px; }
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.tl-item {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+}
+
+.tl-year {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  padding-top: 2px;
+}
+
+.tl-role {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 2px;
+}
+
+.tl-company {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.skills-section {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+}
+
+.skills-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.skill-block {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: default;
+}
+
+.skill-block:hover {
+  border-color: var(--border-2);
+  background: var(--bg);
+}
+
+.skill-block-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+
+.skill-block-detail {
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 60px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 48px;
+}
+
+.footer-headline {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  line-height: 1.0;
+}
+
+.footer-headline span { color: var(--text-3); }
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  padding-top: 8px;
+}
+
+.footer-link {
+  font-size: 14px;
+  color: var(--text-2);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+.footer-link:hover { color: var(--text-1); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+.footer-langs {
+  display: flex;
+  gap: 8px;
+}
+
+.lang-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* TICKER */
+.ticker-wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--bg);
+}
+.ticker-track {
+  display: inline-flex;
+  animation: ticker 22s linear infinite;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 28px;
+  font-size: 13px;
+  color: var(--text-3);
+  letter-spacing: 0.03em;
+}
+.ticker-item strong { color: var(--text-2); font-weight: 500; }
+.ticker-dot { width: 4px; height: 4px; background: var(--border-2); border-radius: 50%; flex-shrink: 0; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.in { opacity:1; transform:translateY(0); }
+
+
+
+/* ── CUSTOM CURSOR ─────────────────────────────────────────────────────── */
+body { cursor: none; }
+@media (hover: none) { body { cursor: auto; } }
+
+.cursor-dot {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(17,17,16,0.25);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s cubic-bezier(0.34,1.56,0.64,1),
+              height 0.35s cubic-bezier(0.34,1.56,0.64,1),
+              background 0.25s ease,
+              border-color 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cursor-ring.explore {
+  width: 88px; height: 88px;
+  background: var(--text-1);
+  border-color: var(--text-1);
+}
+
+.cursor-label {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.cursor-ring.explore .cursor-label { opacity: 1; }
+
+.cursor-ring.hovering {
+  width: 48px; height: 48px;
+  border-color: rgba(17,17,16,0.4);
+}
+
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* Hamburger button */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 300;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-1);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav drawer */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  top: 60px; left: 0; right: 0;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 24px 32px;
+  z-index: 199;
+  flex-direction: column;
+  gap: 0;
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-1);
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  display: block;
+}
+.nav-drawer a:last-child { border-bottom: none; }
+
+@media (max-width: 768px) {
+
+  /* Nav */
+  nav { padding: 0 20px; }
+  .nav-right { display: none; }
+  .nav-hamburger { display: flex; }
+
+  /* Hero */
+  .hero { padding: 100px 24px 48px; min-height: 100svh; }
+
+  /* Hide floating cards on mobile */
+  .floating-cards { display: none; }
+
+  /* Hero center */
+  .hero-center { gap: 20px; }
+
+  .hero-badge { font-size: 11px; padding: 5px 12px 5px 7px; }
+
+  .hero-headline { font-size: clamp(28px, 8vw, 42px); }
+
+  .hero-sub { font-size: 14px; }
+
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  /* Ticker */
+  .ticker-wrap { padding: 12px 0; }
+
+  /* Work section */
+  .work-section { padding: 48px 20px; }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 28px;
+  }
+
+  .section-title { font-size: 24px; }
+
+  /* Case cards — stack vertically */
+  .case-card {
+    grid-template-columns: 1fr;
+  }
+
+  .case-visual {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    min-height: 180px;
+  }
+
+  .case-body { padding: 24px; gap: 20px; }
+
+  .case-title { font-size: 18px; }
+
+  .case-excerpt { font-size: 13px; }
+
+  .case-outcome { font-size: 12px; }
+
+  /* About */
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 48px 20px;
+  }
+
+  .about-headline { font-size: clamp(24px, 6vw, 36px); }
+
+  .about-body { font-size: 14px; }
+
+  .skills-section { grid-column: 1; }
+
+  .skills-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Timeline */
+  .tl-item { grid-template-columns: 72px 1fr; gap: 12px; padding: 16px 0; }
+  .tl-year { font-size: 11px; }
+  .tl-role { font-size: 13px; }
+  .tl-company { font-size: 12px; }
+
+  /* Footer */
+  footer { padding: 48px 20px; }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .footer-headline { font-size: clamp(36px, 10vw, 56px); }
+
+  .footer-contact { align-items: flex-start; }
+
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+
+@media (max-width: 480px) {
+  .hero-headline { font-size: 26px; }
+  .skills-grid-2 { grid-template-columns: 1fr 1fr; }
+  .case-title { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"><span class="cursor-label">Explore</span></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Mandy Wong</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#" id="resumeNavLink">Resume</a></li>
+    </ul>
+    <a href="mailto:mandywsuping@gmail.com" class="nav-cta">Get in touch →</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#work" class="drawer-link">Work</a>
+  <a href="#about" class="drawer-link">About</a>
+  <a href="#" id="resumeDrawerLink" class="drawer-link">Resume</a>
+  <a href="mailto:mandywsuping@gmail.com" class="drawer-link">Get in touch →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Floating interactive cards -->
+  <div class="floating-cards">
+
+    <!-- Card: Case study preview (top left) -->
+    <div class="float-card card-case">
+      <div class="card-case-tag">Featured Work</div>
+      <div class="card-case-title">Fixing onboarding without engineers</div>
+      <div class="card-case-outcome">
+        <div class="outcome-row">
+          <span style="width:80px; flex-shrink:0; font-size:10px; color:var(--text-3);">Session time</span>
+          <div class="outcome-bar"><div class="outcome-fill" style="width:0%" id="bar1"></div></div>
+          <span style="font-size:10px; color:var(--text-1); font-weight:600;">↑</span>
+        </div>
+        <div class="outcome-row">
+          <span style="width:80px; flex-shrink:0; font-size:10px; color:var(--text-3);">Time to ship</span>
+          <div class="outcome-bar"><div class="outcome-fill" style="width:0%" id="bar2"></div></div>
+          <span style="font-size:10px; color:var(--text-1); font-weight:600;">3d</span>
+        </div>
+      </div>
+      <div class="card-case-footer">
+        <span class="card-case-company">Tencent · 2023</span>
+        <span class="card-case-arrow">↗</span>
+      </div>
+    </div>
+
+    <!-- Card: Skills (bottom left) -->
+    <div class="float-card card-skills">
+      <div class="card-skills-title">Specialisations</div>
+      <div class="skill-chips">
+        <span class="skill-chip active">Systems Design</span>
+        <span class="skill-chip">Internationalisation</span>
+        <span class="skill-chip">AI Products</span>
+        <span class="skill-chip">Figma</span>
+        <span class="skill-chip">Prototyping</span>
+      </div>
+    </div>
+
+    <!-- Card: Stats (top right) -->
+    <div class="float-card card-stats">
+      <div class="card-stats-title">// career_stats.json</div>
+      <div class="stat-rows">
+        <div class="stat-row">
+          <span class="stat-label">Experience</span>
+          <span class="stat-val">7<span class="stat-unit">yrs</span></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Countries</span>
+          <span class="stat-val">3</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Studios</span>
+          <span class="stat-val">2<span class="stat-unit">AAA</span></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Languages</span>
+          <span class="stat-val">EN·CN·JP</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Status (bottom right) -->
+    <div class="float-card card-status">
+      <div class="status-header">
+        <div class="status-dot"></div>
+        <span class="status-title">Open to opportunities</span>
+      </div>
+      <div class="status-detail">Looking for senior UX roles in Tokyo or Singapore — complex systems, AI products, and cross-cultural teams.</div>
+      <div class="status-tags">
+        <span class="status-tag">Full-time</span>
+        <span class="status-tag">Tokyo</span>
+        <span class="status-tag">Singapore</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Center headline -->
+  <div class="hero-center">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; align-items:center; animation: fadeUp 0.5s ease forwards;">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        Senior UX Designer
+      </div>
+      <div class="hero-badge" style="padding: 6px 14px;">
+        Singapore
+      </div>
+      <div class="hero-badge" style="padding: 6px 14px;">
+        Japan
+      </div>
+    </div>
+    <h1 class="hero-headline">
+      I design <span class="muted">complex systems</span> that<br>help people act with confidence.
+    </h1>
+    <p class="hero-sub">
+      Specialising in complex system design, internationalisation, and AI-adjacent products. 7+ years at Ubisoft and Tencent.
+    </p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">View work ↓</a>
+      <a href="mailto:mandywsuping@gmail.com" class="btn-secondary">Get in touch</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <!-- First set -->
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> <strong>Case Studies</strong> | Design Process</div>
+  </div>
+</div>
+
+<!-- WORK -->
+<div style="border-top: 1px solid var(--border); padding: 80px 0;" id="work">
+<div class="work-section">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Selected Work</div>
+      <h2 class="section-title">Three problems. Three scales.</h2>
+    </div>
+    <span class="section-count">03 case studies</span>
+  </div>
+
+  <div class="cases-grid">
+
+    <!-- Case 1 -->
+    <a class="case-card reveal" href="case-guangzai.html" style="text-decoration:none; color:inherit;">
+      <div class="case-body">
+        <div>
+          <div class="case-top-row">
+            <span class="case-num">01 / 03</span>
+            <div class="case-arrow">↗</div>
+          </div>
+          <div class="case-tags" style="margin-top: 20px;">
+            <span class="case-tag">AI Behaviour Design</span>
+            <span class="case-tag">Complex Systems</span>
+            <span class="case-tag">Agentic UX</span>
+          </div>
+          <h3 class="case-title">Designing AI companions people actually trust</h3>
+          <p class="case-excerpt">I designed both the AI priority state machine and the UX layer for Guangzai — autonomous companions with needs, skills, and personalities — making invisible behaviour legible for up to 20 characters at once.</p>
+        </div>
+        <div class="case-outcomes">
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Designed L1/L2/L3 behaviour hierarchy from scratch</div>
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Owned both AI logic and UX — end to end</div>
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Framework became project-wide UX standard</div>
+        </div>
+        <div class="case-footer">
+          <span class="case-company-badge">Tencent Japan</span>
+          <span class="case-company-badge">2023–2026</span>
+        </div>
+      </div>
+      <div class="case-visual case-visual-bg-1">
+        <div class="mini-mockup">
+          <div class="mockup-header">
+            <div class="mockup-dots"><div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div></div>
+            <span class="mockup-title">guangzai_behaviour.ai</span>
+          </div>
+          <div class="onboarding-steps">
+            <div class="onb-step active"><span class="onb-step-num" style="background:#ef4444;color:white;font-size:7px;">L3</span><span class="onb-step-label">Alert — needs bathroom</span><span class="onb-step-check" style="color:#ef4444;">!</span></div>
+            <div class="onb-step"><span class="onb-step-num" style="background:#f59e0b;color:white;font-size:7px;">L2</span><span class="onb-step-label">Hungry — find food</span></div>
+            <div class="onb-step"><span class="onb-step-num" style="background:#22c55e;color:white;font-size:7px;">L1</span><span class="onb-step-label">Socialising normally</span></div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Case 2 -->
+    <div class="case-card reveal">
+      <div class="case-body">
+        <div>
+          <div class="case-top-row">
+            <span class="case-num">02 / 03</span>
+            <div class="case-arrow">↗</div>
+          </div>
+          <div class="case-tags" style="margin-top: 20px;">
+            <span class="case-tag">Complex Systems</span>
+            <span class="case-tag">Progressive Disclosure</span>
+            <span class="case-tag">AAA</span>
+          </div>
+          <h3 class="case-title">Making a constrained inventory system feel effortless</h3>
+          <p class="case-excerpt">Ships, slots, weapon sizes, stats — a deeply constrained system players couldn't navigate. A single toggle resolved a team debate and respected two completely different user mental models simultaneously.</p>
+        </div>
+        <div class="case-outcomes">
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Eliminated invalid choices at point of decision</div>
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Scaled across live-service content updates without redesign</div>
+          <div class="case-outcome"><div class="case-outcome-dot"></div>One pattern resolved QA feedback and internal team debate</div>
+        </div>
+        <div class="case-footer">
+          <span class="case-company-badge">Ubisoft Singapore</span>
+          <span class="case-company-badge">2019–2022</span>
+        </div>
+      </div>
+      <div class="case-visual case-visual-bg-2">
+        <div class="mini-mockup" id="weaponMockup">
+          <div class="mockup-header">
+            <div class="mockup-dots"><div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div></div>
+            <span class="mockup-title">ship_loadout.ui</span>
+          </div>
+          <div class="weapon-grid" id="weaponGrid">
+            <div class="weapon-slot selected"><span class="slot-icon">⚓</span></div>
+            <div class="weapon-slot compatible"><span class="slot-icon">💣</span></div>
+            <div class="weapon-slot compatible"><span class="slot-icon">🔱</span></div>
+            <div class="weapon-slot dimmed"><span class="slot-icon">🗡️</span></div>
+            <div class="weapon-slot dimmed"><span class="slot-icon">🏹</span></div>
+            <div class="weapon-slot dimmed"><span class="slot-icon">⚡</span></div>
+          </div>
+          <div class="weapon-filter">
+            <span style="font-size:9px; color:var(--text-3);">Showing compatible only</span>
+            <div class="weapon-toggle" id="weaponToggle">
+              <div class="toggle-pill" id="togglePill"><div class="toggle-knob"></div></div>
+              Show all
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 3 -->
+    <div class="case-card reveal">
+      <div class="case-body">
+        <div>
+          <div class="case-top-row">
+            <span class="case-num">03 / 03</span>
+            <div class="case-arrow">↗</div>
+          </div>
+          <div class="case-tags" style="margin-top: 20px;">
+            <span class="case-tag">Internationalisation</span>
+            <span class="case-tag">Conversion Design</span>
+            <span class="case-tag">Localisation</span>
+          </div>
+          <h3 class="case-title">One subscription screen. Every language. One layout.</h3>
+          <p class="case-excerpt">A single screen had to convert users across all markets simultaneously — including Arabic RTL and dramatically different string lengths. Percentage-based savings made the decision universally legible regardless of currency or locale.</p>
+        </div>
+        <div class="case-outcomes">
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Layout held across all languages including RTL Arabic</div>
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Percentage framing universally legible across all markets</div>
+          <div class="case-outcome"><div class="case-outcome-dot"></div>Single design system, zero market-specific layout variants</div>
+        </div>
+        <div class="case-footer">
+          <span class="case-company-badge">Ubisoft Osaka</span>
+          <span class="case-company-badge">2022–2023</span>
+        </div>
+      </div>
+      <div class="case-visual case-visual-bg-3">
+        <div class="mini-mockup">
+          <div class="mockup-header">
+            <div class="mockup-dots"><div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div></div>
+            <span class="mockup-title">subscription.ui</span>
+          </div>
+          <div class="sub-cards" id="subCards">
+            <div class="sub-card" onclick="selectSub(0)">
+              <span class="sub-card-label">12-Month</span>
+              <span class="sub-card-price">¥4,980</span>
+              <span class="sub-card-badge">Save 72%</span>
+            </div>
+            <div class="sub-card selected" onclick="selectSub(1)">
+              <span class="sub-card-label">3-Month</span>
+              <span class="sub-card-price">¥3,100</span>
+              <span class="sub-card-badge">Save 31%</span>
+            </div>
+            <div class="sub-card" onclick="selectSub(2)">
+              <span class="sub-card-label">1-Month</span>
+              <span class="sub-card-price">¥1,500</span>
+              <span class="sub-card-badge">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div style="border-top: 1px solid var(--border);" id="about">
+<div class="about-section">
+  <div class="reveal">
+    <div class="about-eyebrow reveal">About</div>
+    <h2 class="about-headline">Built for complexity.<br>Designed for humans.</h2>
+    <div class="about-body">
+      <p>I'm a Singaporean UX Designer with 7+ years shipping complex digital products across Japan and Singapore. My background is in information engineering — I think in systems before I think in screens.</p>
+      <p>I've worked at Ubisoft Singapore on a AAA live-service game, Ubisoft Osaka on Rocksmith+ — a subscription EdTech product for learning guitar — and Tencent Japan on a Chinese social open-world game. Each role pushed me into different design problems across different cultures and constraints.</p>
+      <p>Now I'm focused on AI-adjacent products and complex workflow tools — where good UX isn't a nice-to-have, it's what makes the technology actually work for people.</p>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-year">2023–2026</span>
+        <div><div class="tl-role">Senior UX Designer</div><div class="tl-company">Tencent Japan — Aostar</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-year">2022–2023</span>
+        <div><div class="tl-role">UI/UX Designer</div><div class="tl-company">Ubisoft Osaka — Rocksmith+</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-year">2019–2022</span>
+        <div><div class="tl-role">UX Designer</div><div class="tl-company">Ubisoft Singapore — Skull & Bones</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-year">NTU</span>
+        <div><div class="tl-role">B.Eng Information Engineering</div><div class="tl-company">Nanyang Technological University</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="skills-section reveal">
+    <div class="section-eyebrow">Core Skills</div>
+    <div class="skills-grid-2">
+      <div class="skill-block"><div class="skill-block-title">Systems Thinking</div><div class="skill-block-detail">Complex workflows, IA, progressive disclosure</div></div>
+      <div class="skill-block"><div class="skill-block-title">Internationalisation</div><div class="skill-block-detail">RTL, localisation, multi-market</div></div>
+      <div class="skill-block"><div class="skill-block-title">AI Products</div><div class="skill-block-detail">Agentic UX, trust, transparency patterns</div></div>
+      <div class="skill-block"><div class="skill-block-title">Cross-functional</div><div class="skill-block-detail">Engineering, science, product</div></div>
+      <div class="skill-block"><div class="skill-block-title">Prototyping</div><div class="skill-block-detail">Figma, H5, engine-level UI</div></div>
+      <div class="skill-block"><div class="skill-block-title">Languages</div><div class="skill-block-detail">English · Mandarin · Japanese</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top: 1px solid var(--border);">
+<footer>
+  <div class="footer-top reveal">
+    <h2 class="footer-headline">Let's work<br><span style="color:#2dd4bf;">together.</span></h2>
+    <div class="footer-contact">
+      <a href="mailto:mandywsuping@gmail.com" class="footer-link">✉ mandywsuping@gmail.com</a>
+      <a href="https://www.linkedin.com/in/mandy-wong-145755175/" target="_blank" class="footer-link">↗ LinkedIn</a>
+      <a href="#" class="footer-link" id="resumeFooterLink">↓ Resume (EN · CN · JP)</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Mandy Wong</span>
+    <div class="footer-langs">
+      <span class="lang-badge">EN</span>
+      <span class="lang-badge">中文</span>
+      <span class="lang-badge">日本語</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script>
+  // Animate bars in hero card
+  setTimeout(() => {
+    const b1 = document.getElementById('bar1');
+    const b2 = document.getElementById('bar2');
+    if(b1) b1.style.width = '78%';
+    if(b2) b2.style.width = '35%';
+  }, 1000);
+
+  // Skill chips toggle
+  document.querySelectorAll('.skill-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // Weapon toggle interaction
+  let showAll = false;
+  const toggle = document.getElementById('weaponToggle');
+  const pill = document.getElementById('togglePill');
+  const grid = document.getElementById('weaponGrid');
+
+  if(toggle) {
+    toggle.addEventListener('click', () => {
+      showAll = !showAll;
+      pill.classList.toggle('on', showAll);
+      if(grid) {
+        grid.querySelectorAll('.weapon-slot.dimmed').forEach(s => {
+          s.style.opacity = showAll ? '1' : '0.3';
+        });
+      }
+    });
+  }
+
+  // Subscription card selection
+  window.selectSub = function(idx) {
+    document.querySelectorAll('.sub-card').forEach((c, i) => {
+      c.classList.toggle('selected', i === idx);
+    });
+  };
+
+
+  // Custom cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top = mouseY + 'px';
+  });
+
+  function animateCursor() {
+    ringX += (mouseX - ringX) * 0.1;
+    ringY += (mouseY - ringY) * 0.1;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Explore state on case cards
+  document.querySelectorAll('.case-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      ring.classList.add('explore');
+      ring.classList.remove('hovering');
+      dot.style.opacity = '0';
+    });
+    card.addEventListener('mouseleave', () => {
+      ring.classList.remove('explore');
+      dot.style.opacity = '1';
+    });
+  });
+
+  // Hover state on other interactive elements
+  document.querySelectorAll('a, button, .skill-chip, .sub-card, .weapon-slot, .float-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      if (!ring.classList.contains('explore')) ring.classList.add('hovering');
+    });
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+
+  // Hide cursor when leaving window
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const navDrawer = document.getElementById('navDrawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navDrawer.classList.toggle('open');
+  });
+  // Close drawer on link click
+  document.querySelectorAll('.drawer-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navDrawer.classList.remove('open');
+    });
+  });
+
+  // Resume download
+  const resumeB64 = 'JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQSA8PAovUyAvVVJJIC9UeXBlIC9BY3Rpb24gL1VSSSAobWFpbHRvOm1hbmR5d3N1cGluZ0BnbWFpbC5jb20pCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMTYzLjc1MTYgNzQyLjM1MjggMjYxLjY3MTYgNzUxLjk1MjggXSAvU3VidHlwZSAvTGluayAvVHlwZSAvQW5ub3QKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL0EgPDwKL1MgL1VSSSAvVHlwZSAvQWN0aW9uIC9VUkkgKGh0dHBzOi8vd3d3LmxpbmtlZGluLmNvbS9pbi9tYW5keS13b25nLTE0NTc1NTE3NS8pCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMjcyLjc5MTYgNzQyLjM1MjggNDE2LjQwNzYgNzUxLjk1MjggXSAvU3VidHlwZSAvTGluayAvVHlwZSAvQW5ub3QKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0Fubm90cyBbIDQgMCBSIDUgMCBSIF0gL0NvbnRlbnRzIDExIDAgUiAvTWVkaWFCb3ggWyAwIDAgNTk1LjI3NTYgODQxLjg4OTggXSAvUGFyZW50IDEwIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAKICAvVHJhbnMgPDwKCj4+IC9UeXBlIC9QYWdlCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Db250ZW50cyAxMiAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzU2IDg0MS44ODk4IF0gL1BhcmVudCAxMCAwIFIgL1Jlc291cmNlcyA8PAovRm9udCAxIDAgUiAvUHJvY1NldCBbIC9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUkgXQo+PiAvUm90YXRlIDAgL1RyYW5zIDw8Cgo+PiAKICAvVHlwZSAvUGFnZQo+PgplbmRvYmoKOCAwIG9iago8PAovUGFnZU1vZGUgL1VzZU5vbmUgL1BhZ2VzIDEwIDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKOSAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwNTA5MTUyMDI0KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwNTA5MTUyMDI0KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSBcKG9wZW5zb3VyY2VcKSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjEwIDAgb2JqCjw8Ci9Db3VudCAyIC9LaWRzIFsgNiAwIFIgNyAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDMzMjQKPj4Kc3RyZWFtCkdiIVNuPkJlaTMmVXNKWF5mLTxDODJSTkVvTiE+Wj4lYz0+LGJOPjY/UV11RTptNlEhSjlKPDdePkFvKTdFJjwvOXNcXWdhWjVZLEpzYUFaXkEyQiZKR0pzWmZVbDxnZlNeVi9IUUI9NUE/dUZJQFA7PyJcKlJSSW8mVi0xPSFqcDBMWEBNXEJjOztrKy9hPm9PJC51RzU6UG9ITDIhMF5IP2sqKksyKWg1LzBRM0pUaGNrIS8pXiZsXVpOMiI9JmdqKlpydFJlcTJFU3RgRmFUR2QzJW9RK24+P1knLUBJQ09bIUhpY1sxZyItUS5dR1AoVWhKU3ItLj9SVSczaj8lJD1nS1UwZVJlQWspal1MYGByOGMkPTRVMmRbI2JKIy8sLkg4OjAzYi1VWDlEckJgJVg0UD9FPlR1NiVgKG5RbD1RZHFsals9bk1EOzBkbCNlc1hoKUU/TllTVVpJPiEySChJUWhFY0ckOidabiRGdEloaixSVEtwU2RlXiUhK2tJXW8sKjxdOzRoJ2xBQ0hYInU4TEdSJWpsSy9jR2QsWTQrRC8wOWVgKztiPz0vS1VlRy4jPmRZJGlJNTVKOz80MV9MNj9eW0sybGtVPzlAa3BUSDctPzlHQ2BCSlA9blNdbGNDQEVrOFREck9SNElhI0NMbktjLTVmVmNLVjwtRjFfYFQrYEFfZjo/OiQ4dCZbSio9ams0PzdZInBuOm8ySSRVWGRRWWIsXjlPQSk3JWQrNTNQQGhlXmtBMkFmWGROTTsyOHA4Xl9xMFY7M2FkOS9OQDlSLS9UNChzYDdNRHFWNVEvQyk6KiZvMio0I2VCKkI9ZFtBXCJULUo1bjFIJzkqc1c6SSdZOkNDSl5ZcEFAYEAmOTtiSSZtXW4oOS91RVA/IihyR1ttJ1IqaDA8JC1AJGNCWVxRcVcudWZsZDVAMlhzWjtIVCZZYSZJckw5ODI8Q3RQO1lEXGUmPFVOX1teMXIoYygxZi86RU4+Y1o8YmNFXkwtYjlmKmUvPHEnWWpAK3AsI2BYMGUsanRLTT9fNnBHXkRjU1osaGFfQiMiYmlGKSpaaGFgLFgsUj89Ti8ibWY+KkknMFtgXkNOQTprYixJL1pkbmIrZlNgR2BaJjs/dD4hUDlHazpkUGk3YXIva3BGVVo9LDdHU0kuaUtyNyc3PSZgTjZMQzo9X21TNVg6PVJTa1QyWFNTbU11PGVlNS4xUjhMITJwXileZlUoRERsM2hdRF9AbWJnVU9bY2kqNWY3PWMvKWcsbF9hX2dRMi09akhxU0wuRiFJSGM7XHBoWGVgVElDdUM1bGhtJl9YMUk6cC84VGNTM1ouM2pUKCMhXyNuQiZcUVdNaXUrPVstSmckQSVxZWspYG5jNj0hJGA8L2wvaGVka0dZXFk1P3JUSV1RajJBI1pzWXIrJ0lGYW5DKGVsKTkjcE4jM2ZQQFRgL2RFSG9eYGFAc0AhP0thbUw1Iz1nUyFLSiNyRUF0K3A4JkokZVUlaVFyKiFcXT9XVUpCbjEnT2NjQjQpJ25vTXBhU0VuVF4/NTtsUik8YUBkQElVNiFyXj4lbS0qZVJIJiddTW4rVTV0Y2hYbGpXXUIzWl5PdE1hWmAjKWlqQmJRZG1jK1wiWl5iUClTI1BrRTsxa3FVbEdtKFxxQU05WU0vUEliWk9NTEA+PzFZKyJ1TWopPlMtU3UmQDo2MGBcI1pwLTFHSnBqMnUoIWJOUkxpXiM9SVhiRSohZy5rRGUuPF0xYG5kQEhsW2VORTY3WltaUHBdbjVSI21GOD1NOWUzTGIvbVIkZ24jTFY5Qi81KjJDOk42PiEqbzc+TEUoL2dOJW9OZWA0cSZiVStaRCVVY0EnYVJzQyckbFtWISxBaEFSUCVaWC9kczFfM2pPKGVfPThwNmo/SVxgcy1zJmIzWltlS0FXQiRCJE9KMiQnTk5ZIlw7JytRPXFCLm02MC9GJ1YuPWwzYXEuXyFWTW09OVZMIVZfOlQxRkgzQyU9LlgyXmVUamMscDo9L2ZwP0ZwbGE5PCZJYWlbUGAuLStxNVhKXWNRZ0BqW1dATjc4am1vWC5sbCghI1syOjhESyRfSSYhZktlWDQkKkwuW0NxIjk9JCxmUDhZME9kdUEiP0UpLkxoZyRGU0NlVDBiLkksUWtPWkBNaEVPNFtaLHUvbXNxLVpWRWBaUEJxPyVIYXVwc1I1JWNbSFEjRy4yOk87JV5oOWJyU0FhKnRfL25qSmNRUiRgYSNnZSUtZW9gYDopXlo9VE1dNCJBNDNjRzNXbFtZbCc8K0EpcztNMVZGaSlAUWR0Jjc8JDNLaTJcMVRySmgkK3BLZSYzZlNjTVgzWkZMOlY3TV8jbVdnIzJKQyY/NWMrblZwZ3IrbTddcVkkQFRcIWk/dDQvUFFMcDg/IW49XjMqOSMzZEg+PEcsJGJPcUNKJ1JKZz1AMlZKWUBaUidZUUtWSmw+XjpDYEs5MkpVMiFnX2cpT1NVJF9VMSlNVHEuZj5La3VGP2ApRkFqUypaMW9nK1Y/PjYvU2pAIz05WikwdCI7ZDVaUGhZJ1NjYEh0bTlvWHJHRlJuJFBgUWlicHAkPnFgX0ZvNFdkSzwwU2k+YmE3Qi8sZzxQWy1vZVtbMHEtaGk+XjVZOlxgWUIqTSl1bTc/NSkrNF5nPGBwZkl1a1xcZWshNlghLC4iRGV0K2NyJ21iZSFGLmsvSUhlXUFLQitgMk1GT0BZXzEvIyM/ZDVFSiRjQ2g6SWApMiFpXVc9N0VSNilpKWt1L15VWVMhTWhEK0t0b29DbklGRDNtMnJbQEFlTGlSdUNmbzdUclU8Yy07VnAvSiFIYFYnLj9mWCQ4WVFKOj5RNVQ0TlJMJWssciZdZWBPYz8qUSIzOEpZXGNrbF9eTkRFY1g5QCIjNCFIWmNoajFuZC9pcnU7NFpNNzcmQVBnNGM5TFpDQSIycXU9ZyhoQmkxc1ovNS1PY2VCJVBBczFbblVUOSxeO3MkWGREXFpESitNIXJvZyNTLVtwXDljMjg2WEBOKDQoP1w7c1YuLz8vLz5qbV43UmtwXD1cNGxtN25OUzZRU2g7PWFwdW9DY0ZHOl1ANig/cidaODNWQllQSyleLjptIVJZazhfYm1WPSErZE5gZ0dXYVxIXnNJWD9xWFthTSRAXEknWTA+WF5aTWJJQzFBL11CPl1fXVJtYFAnRDpqYU1TRTpBbSsjIUxbbysjXXVtYkB1RmU+XmUyRzZgJFIyTldGMlwzQVdhU2VTMWRbZ2xCP0VORF4+blVgUyE1bFYvJTBiWjxeNTYtcU04Oi5hPGk6ampSSGlXdDtAbSUwUzM1SUI0KSlDX3NUMDRcckwhZDNhRTk7T11cOmRhPT9XNCRRMzxwR11LXypOUl5nLD08LU5lO2Q0T10hTGw1LVBKWWRIR3ErZ3BVZzNjSig4Nko0aydpXm5IPkkhbWQjNi5VWjJKZWEmWmtdJD9OZC9rPltqOjpyOUsqJWg4IydRc2xgQkFCL0xdYDZyQzNUJDxaVVEtRy9CYVEkaV84SHE9RjVVRDYkLF5YO1wrZGMiIjxlMSM0YGBmOUwlayooZjArOjJdcU0+JzBDNENtI1VXPTJsSmpJJUk4JkpJYS5TbjQmQTopWSloXW9EbiMocTJlajEzdCRfQTdxSjo2Njo5aDRtMmFrRTEmQEtXZCgsRms9QVhSJ01uTkBPJS5EKGskZFpMblV1alRVVzQ1K1p1JmhYO1BEXWVvKmphaTBlPDNuYXJgTV0rRVFcSjpBKD1lUlszSm0pSTxtPWQrXDojczRmQXNlSls4JVsvUyg5JlYtIlZgPnQhaUo/J140LDUuSmZRPCYqTWFnKnFLSE1hZ0NWdSJcaFZISUlLWFpBPil1ME8mPEA7KWIrSCg4XDAzTCNJbGU7PyJpcTNxMCNjTDQ3QytTIj5hJ09nKDNqY0E2YXF0Kz41QW45UUVCJ01ecVhSKT5eTjxWcCY3PGcqOicrdWdrJXExSUpNLCVNPDonbT4kL1Q+J1ptZWovNmtfXSM3Wy1pKmRKN1xVL1w6ViFKaGxqVDovdGtcXj5hMyE2QisyJStUOEdgKiNQblIqLmY3RSZMU0ZvW2x1NDpidEEnXys4Tj8/R28oVElzW1FgWTpYQyprOkoyLU1KZjZBPEg6MVleW0tmbmB0OCxSYURuVjkmc0lzZjpNRlk6XzlUNzxNLm5QQlU5Xl4nR05DO2lNITI5TUFTNTpYa2ZAZ2xtZ1FcQE0iJFhAKD9MQURpaT0jZ1dXY1xCIiNKJ2ZYWEFbVzVlKytEKCYuKi9YV0A9JW1ZYylFLSU3XC1eW2xxKUZwbjtlKXJRV1U9ImhtNFFnYGZQRTxBX1hdVGAzYG1zS086TVcuTG1ObTE+dSU8PS1CX3V+PmVuZHN0cmVhbQplbmRvYmoKMTIgMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggOTA2Cj4+CnN0cmVhbQpHYXVhPTlsSyNGJjtLWk9NRS5nJi5TWGRDcWFgcjwvbF8zYlExaSM0LHBtLl1mVzVgT3I7MyQxT08rJixYJUpVSTBvNzo8YTclNylWRWpYRmVVOU9eXDtdQSpRMyhWLzluOnJwJUZHL25VPF5MYGgsbF8wOFhTVHBuOWlEaWA6aVtebG0+YEE6LSlTaVYiMj1wXjk6JkQoRkYubGtKOXA6NFBTUWFCWyUsdEwrWD5IUHQubklmUjtbdWMiLXM9KGYuIU48MEU4ZSMxIyYxJEQiKjYpRmlQPGtdcThuIzE0TkteNl0rJEdkU0EoVidgU1BcIlUnQGkiQC1jRnE7Tmo1cSlMWzgzZm5BXD1TXTk7JTI6OytvdDAzIiFiZmopIk1oRidQbnI8P1gjSF86TitsaE0qOC1obk5LWGtjbGFAISIqPzNsR1ViSkY1dSQ5LC1FLlxHVmwxVWtISS51bFYuW0czUSRoLVglPkgnJXEsLilvN2Y7RV0qIjxicilkJzByNWIxJ3RwY2E+LUZhW2peZXQxT14yWDktb2VBSXBXXyciKzEnRCMpMUFrMy8tQlFOJmMhdHRDSUw4T1ZHUm8xPldoMCE4aUBLczg6OXVfUGcrIzQrX3FlKWQ5QEAzLCRSPFhfLUxNREdfI2RuTmAkOHIiJEh1ViF1Zi00IShNI2kiUldfZ1pcTm88KU0pNztXVi1JZ2ldcjlnOjlnTTNbJDJCZlkrUDhRPFAoVFM+UV5UUylrUzBDQmM8SEE5PT1nbEJaYm1VQXFAVCFJQDJqOSg4KFYnUjVSPzRdI0hfPGxFX1tZN3IsXnI4IjJqN2NqLTxbSDNqYmUrPz8lNThbSkg4aFxHUy9yW0o6IyNraUUzI0whW1YuaDtfNmgrVCNZVCMiXlVWYTlZZTs4IShcRFpgU3EhckhDbWpoY2ZmX3JCNEExY2plbjslUFxMcyExL1hbPyg6XXBiIklRMzBSOmJQYmdmUWBfVF9pajxnP1YsJTwtQ1V1SE1xb1ZrQG43WSh0KU1jKWlDbmlKSGcnMkBoLVhKYTh1dHRLcyNXalEtdC4wUjlLIXEqZ2JJV10lZTpgWiIoVjY7Xk5qUkBAJCcpbms9XCEvXUhvXkNFNEUpOyxOQGMyLWBsIThlR2BVUms3SW5YaGQvbW8xZDhqUDMoKWlQKzYuaSVTIWtZZC5uM09HdUs6fj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxMwowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNjEgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA5IDAwMDAwIG4gCjAwMDAwMDAzMjEgMDAwMDAgbiAKMDAwMDAwMDUwMiAwMDAwMCBuIAowMDAwMDAwNzAzIDAwMDAwIG4gCjAwMDAwMDA5MzIgMDAwMDAgbiAKMDAwMDAwMTEzNyAwMDAwMCBuIAowMDAwMDAxMjA2IDAwMDAwIG4gCjAwMDAwMDE0ODYgMDAwMDAgbiAKMDAwMDAwMTU1MiAwMDAwMCBuIAowMDAwMDA0OTY4IDAwMDAwIG4gCnRyYWlsZXIKPDwKL0lEIApbPDQ1Mzg1NTkzZWE4ZjNmNjNhMjhhYmI0ZjZhNGE5Mjk5Pjw0NTM4NTU5M2VhOGYzZjYzYTI4YWJiNGY2YTRhOTI5OT5dCiUgUmVwb3J0TGFiIGdlbmVyYXRlZCBQREYgZG9jdW1lbnQgLS0gZGlnZXN0IChvcGVuc291cmNlKQoKL0luZm8gOSAwIFIKL1Jvb3QgOCAwIFIKL1NpemUgMTMKPj4Kc3RhcnR4cmVmCjU5NjUKJSVFT0YK';
+  function downloadResume(e) {
+    e.preventDefault();
+    const link = document.createElement('a');
+    link.href = 'data:application/pdf;base64,' + resumeB64;
+    link.download = 'MandyWong_Resume.pdf';
+    link.click();
+  }
+  document.getElementById('resumeNavLink').addEventListener('click', downloadResume);
+  document.getElementById('resumeFooterLink').addEventListener('click', downloadResume);
+  const drawerResume = document.getElementById('resumeDrawerLink');
+  if(drawerResume) drawerResume.addEventListener('click', downloadResume);
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
