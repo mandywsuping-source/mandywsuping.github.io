@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subscription Screen — Mandy Wong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-2: #f8f8f7;
+  --border: #e8e8e4;
+  --border-2: #d4d4ce;
+  --text-1: #111110;
+  --text-2: #6b6b66;
+  --text-3: #b4b4ae;
+  --tag-bg: #f0f0ec;
+  --tag-text: #6b6b66;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: 'Geist', -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --turquoise: #2dd4bf;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CURSOR */
+#cursorDot {
+  position: fixed; z-index: 9999;
+  width: 6px; height: 6px;
+  background: var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+#cursorRing {
+  position: fixed; z-index: 9998;
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.2s;
+  opacity: 0.4;
+}
+#cursorRing.hovering { width: 40px; height: 40px; opacity: 0.25; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 60px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-1);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav-back {
+  font-size: 14px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-back:hover { color: var(--text-1); }
+
+/* HERO */
+.hero {
+  padding: 120px 40px 64px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow span { opacity: 0.5; }
+
+h1 {
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  margin-bottom: 28px;
+}
+h1 .hl { color: var(--turquoise); }
+
+.hero-intro {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-2);
+  max-width: 620px;
+}
+.hero-intro strong { font-weight: 600; color: var(--text-1); }
+
+/* HERO IMAGE */
+.hero-img {
+  max-width: 760px;
+  margin: 48px auto 0;
+  padding: 0 40px;
+}
+.hero-img img {
+  width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: block;
+}
+.caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 10px;
+}
+
+/* META BAR */
+.meta-bar {
+  max-width: 760px;
+  margin: 56px auto 0;
+  padding: 28px 40px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.meta-item label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.meta-item span {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+
+/* CONTENT */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 20px;
+}
+.section h2 {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-1);
+  margin-bottom: 20px;
+}
+.section p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.section p:last-child { margin-bottom: 0; }
+.section p strong { font-weight: 600; color: var(--text-1); }
+
+/* BLOCKQUOTE */
+blockquote {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: var(--bg-2);
+  border-left: 2px solid var(--border-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+blockquote p {
+  font-size: 15px !important;
+  font-style: italic;
+  color: var(--text-2) !important;
+  margin: 0 !important;
+  line-height: 1.65 !important;
+}
+
+/* IMAGE GRIDS */
+.img-grid { display: grid; gap: 12px; margin: 36px 0; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.img-grid figure img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.img-grid figcaption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* BEFORE / AFTER */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 36px 0;
+}
+.ba-card { position: relative; }
+.ba-card img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.ba-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  margin-top: 10px;
+}
+.ba-label.before { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
+.ba-label.after  { background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border); }
+.ba-caption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* OUTCOMES */
+.outcomes { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.odot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-3);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+.outcome-item p {
+  font-size: 14px !important;
+  color: var(--text-1) !important;
+  margin: 0 !important;
+  line-height: 1.55 !important;
+}
+
+/* FOOTER */
+.page-footer {
+  max-width: 760px;
+  margin: 80px auto 0;
+  padding: 36px 40px 80px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-footer a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.page-footer a:hover { color: var(--text-1); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 680px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 96px 20px 48px; }
+  .hero-img { padding: 0 20px; }
+  .meta-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+  .content { padding: 0 20px; }
+  .cols-2, .cols-3, .before-after { grid-template-columns: 1fr; }
+  .page-footer { padding: 32px 20px 60px; flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mandy Wong</a>
+  <a href="index.html#work" class="nav-back">← All work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero reveal">
+  <div class="eyebrow">
+    UBISOFT OSAKA <span>·</span> 2022–2023 <span>·</span> ROCKSMITH+
+  </div>
+  <h1>One screen. Every language. <span class="hl">One layout.</span></h1>
+  <p class="hero-intro">
+    A single subscription screen had to convert users across all markets simultaneously — across currencies, string lengths, and platforms. The original design tried to say everything. The redesign focused on the <strong>only two things that actually drove decisions</strong>: price and savings.
+  </p>
+</div>
+
+<div class="hero-img reveal">
+  <img src="Landing__Tablet_.png" alt="Rocksmith+ subscription screen — tablet" />
+  <p class="caption">// Final design — tablet. Three plans, one layout, universally legible across all markets.</p>
+</div>
+
+<div class="meta-bar reveal">
+  <div class="meta-item"><label>Company</label><span>Ubisoft Osaka</span></div>
+  <div class="meta-item"><label>Role</label><span>UI/UX Designer</span></div>
+  <div class="meta-item"><label>Platform</label><span>iOS · Android · PC</span></div>
+  <div class="meta-item"><label>Year</label><span>2022 – 2023</span></div>
+</div>
+
+<div class="content">
+
+  <!-- 01 PROBLEM -->
+  <div class="section reveal">
+    <div class="section-label">01 — PROBLEM</div>
+    <h2>Too much to read. Too little reason to convert.</h2>
+    <p>The original subscription screen tried to justify every plan with feature lists, marketing copy, and platform context. It worked in English, on one screen size, for one market. Everywhere else, it broke.</p>
+    <p>Long translated strings overflowed. Feature bullets that fit in English collapsed into walls of text in Japanese. Prices displayed in local currency meant nothing without context — <strong>¥9,980 doesn't feel cheap or expensive until you know it's saving you 44%</strong>. Conversion was low and the design needed to work harder across every locale simultaneously.</p>
+    <blockquote>
+      <p>"The problem wasn't that users didn't understand the product. It was that the screen made them work too hard to understand the value."</p>
+    </blockquote>
+
+    <div class="before-after">
+      <div class="ba-card">
+        <img src="Screenshot_20230208-124734_Rocksmith_.jpg" alt="Before — original subscription screen" />
+        <div class="ba-label before">Before</div>
+        <p class="ba-caption">// Feature-heavy layout — three columns, five bullet points each, repeated CTA per plan.</p>
+      </div>
+      <div class="ba-card">
+        <img src="Screenshot_20230208-142254_Rocksmith_.jpg" alt="Before — original subscription screen variant" />
+        <div class="ba-label before">Before</div>
+        <p class="ba-caption">// Same approach on a different breakpoint — copy-heavy, decision unclear.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 THE INSIGHT -->
+  <div class="section reveal">
+    <div class="section-label">02 — THE INSIGHT</div>
+    <h2>Price and percentage. That's it.</h2>
+    <p>Users scanning a subscription screen make their decision in seconds. They're not reading feature lists — they're asking one question: <strong>which plan gives me the most value?</strong></p>
+    <p>Percentage-based savings answer that question universally. "Save 44%" is legible whether the price is $99.99, ¥9,980, or €89.99. It doesn't require currency knowledge, market context, or mental arithmetic. The redesign stripped everything back to the two signals that actually drove the decision: the price, and how much you save.</p>
+    <p>Supporting information — account linking, subscription terms, bonus offers — was moved into contextual modals. Available when needed, invisible when not.</p>
+  </div>
+
+  <!-- 03 WHAT SHIPPED -->
+  <div class="section reveal">
+    <div class="section-label">03 — WHAT SHIPPED</div>
+    <h2>One design. Every screen. Every market.</h2>
+
+    <div class="before-after">
+      <div class="ba-card">
+        <img src="Landing__Mobile_.png" alt="Final design — mobile" />
+        <div class="ba-label after">After · Mobile</div>
+        <p class="ba-caption">// Clean plan stack — price and savings badge front and centre. Single CTA.</p>
+      </div>
+      <div class="ba-card">
+        <img src="Landing__Tablet_.png" alt="Final design — tablet" />
+        <div class="ba-label after">After · Tablet</div>
+        <p class="ba-caption">// Tablet layout — plan selector left, trial CTA right. Same hierarchy, more breathing room.</p>
+      </div>
+    </div>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <img src="With_Bonus__Mobile_.png" alt="Bonus state — mobile" />
+        <figcaption>// Bonus variant — Rocksmith 2014 owner offer surfaced contextually without restructuring the layout.</figcaption>
+      </figure>
+      <figure>
+        <img src="Linking_Accounts__Mobile_.png" alt="Linking accounts modal" />
+        <figcaption>// Account linking modal — legal and technical detail moved out of the main flow.</figcaption>
+      </figure>
+    </div>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <img src="About_Subscriptions__Tablet_.png" alt="About subscriptions modal — tablet" />
+        <figcaption>// About Subscriptions — contextual detail available on demand, not competing for attention.</figcaption>
+      </figure>
+    </div>
+
+    <div style="margin: 36px 0 0;">
+      <div style="border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; background: #000;">
+        <video src="rocksmith-subscription.mp4" controls muted playsinline preload="metadata" style="width:100%; display:block;"></video>
+      </div>
+      <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-3); margin-top: 10px;">// Live interaction — plan selection, modal flows, and the full purchase journey on mobile.</p>
+    </div>
+  </div>
+
+  <!-- 04 OUTCOMES -->
+  <div class="section reveal">
+    <div class="section-label">04 — OUTCOMES</div>
+    <h2>Simpler to read. Easier to decide.</h2>
+    <div class="outcomes">
+      <div class="outcome-item"><div class="odot"></div><p>Single layout held across all markets and locales — no market-specific design variants required</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Percentage-based savings made value universally legible regardless of currency or locale</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Supporting information moved to modals — reduced cognitive load at the moment of decision</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Layout held across iOS, Android, and PC without platform-specific redesigns</p></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer reveal">
+  <a href="case-skullandbones.html">← Making a constrained system feel effortless</a>
+  <a href="index.html#work">All work →</a>
+</div>
+
+<script>
+  // Cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+  (function anim() {
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+  document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='0.4'; });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
