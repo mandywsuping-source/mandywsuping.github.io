@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>船只装备系统 — Mandy Wong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff; --bg-2: #f8f8f7; --border: #e8e8e4; --border-2: #d4d4ce;
+  --text-1: #111110; --text-2: #6b6b66; --text-3: #b4b4ae;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06); --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --radius: 12px; --radius-sm: 8px;
+  --font: 'Geist', -apple-system, 'PingFang SC', sans-serif;
+  --font-mono: 'Geist Mono', monospace; --turquoise: #2dd4bf;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text-1); font-family: var(--font); font-size: 15px; line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+#cursorDot { position: fixed; z-index: 9999; width: 6px; height: 6px; background: var(--text-1); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); transition: opacity 0.2s; }
+#cursorRing { position: fixed; z-index: 9998; width: 28px; height: 28px; border: 1.5px solid var(--text-1); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, opacity 0.2s; opacity: 0.4; }
+#cursorRing.hovering { width: 40px; height: 40px; opacity: 0.25; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; height: 60px; background: rgba(255,255,255,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-weight: 700; font-size: 15px; color: var(--text-1); text-decoration: none; letter-spacing: -0.02em; }
+.nav-back { font-size: 14px; color: var(--text-2); text-decoration: none; transition: color 0.15s; }
+.nav-back:hover { color: var(--text-1); }
+.hero { padding: 120px 40px 64px; max-width: 760px; margin: 0 auto; }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.eyebrow span { opacity: 0.5; }
+h1 { font-size: clamp(36px, 5.5vw, 64px); font-weight: 800; line-height: 1.04; letter-spacing: -0.04em; color: var(--text-1); margin-bottom: 28px; }
+h1 .hl { color: var(--turquoise); }
+.hero-intro { font-size: 17px; line-height: 1.75; color: var(--text-2); max-width: 620px; }
+.hero-intro strong { font-weight: 600; color: var(--text-1); }
+.hero-img { max-width: 760px; margin: 48px auto 0; padding: 0 40px; }
+.hero-img img { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); display: block; }
+.caption { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); margin-top: 10px; }
+.meta-bar { max-width: 760px; margin: 56px auto 0; padding: 28px 40px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.meta-item label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+.meta-item span { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.content { max-width: 760px; margin: 0 auto; padding: 0 40px; }
+.section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.section h2 { font-size: clamp(24px, 3.5vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; color: var(--text-1); margin-bottom: 20px; }
+.section p { font-size: 16px; line-height: 1.75; color: var(--text-2); margin-bottom: 16px; }
+.section p:last-child { margin-bottom: 0; }
+.section p strong { font-weight: 600; color: var(--text-1); }
+blockquote { margin: 32px 0; padding: 20px 24px; background: var(--bg-2); border-left: 2px solid var(--border-2); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+blockquote p { font-size: 15px !important; font-style: italic; color: var(--text-2) !important; margin: 0 !important; line-height: 1.65 !important; }
+.img-grid { display: grid; gap: 12px; margin: 36px 0; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.img-grid figure img { width: 100%; display: block; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.img-grid figcaption { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-top: 8px; line-height: 1.5; }
+.demo-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin: 32px 0; }
+.demo-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); letter-spacing: 0.06em; margin-bottom: 18px; }
+.toggle-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.toggle-row span { font-size: 12px; color: var(--text-2); }
+.pill { width: 36px; height: 20px; background: var(--border); border-radius: 10px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+.pill.on { background: var(--text-1); }
+.knob { position: absolute; width: 14px; height: 14px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: left 0.2s; box-shadow: var(--shadow-sm); }
+.pill.on .knob { left: 19px; }
+.weapon-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.w-slot { aspect-ratio: 1; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.25s; }
+.w-slot.compat { background: #eff6ff; border-color: #bfdbfe; }
+.w-slot.incompat { opacity: 0.22; filter: grayscale(1); }
+.w-slot.gone { display: none; }
+.outcomes { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.outcome-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.odot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); margin-top: 8px; flex-shrink: 0; }
+.outcome-item p { font-size: 14px !important; color: var(--text-1) !important; margin: 0 !important; line-height: 1.55 !important; }
+.vid-wrap { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; background: #000; }
+.vid-wrap video { width: 100%; display: block; }
+.vid-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-top: 8px; }
+.page-footer { max-width: 760px; margin: 80px auto 0; padding: 36px 40px 80px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.page-footer a { font-size: 14px; font-weight: 500; color: var(--text-2); text-decoration: none; transition: color 0.15s; }
+.page-footer a:hover { color: var(--text-1); }
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+@media (max-width: 680px) {
+  nav { padding: 0 20px; } .hero { padding: 96px 20px 48px; } .hero-img { padding: 0 20px; }
+  .meta-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; } .content { padding: 0 20px; }
+  .cols-2, .cols-3 { grid-template-columns: 1fr; } .weapon-grid { grid-template-columns: repeat(4, 1fr); }
+  .page-footer { padding: 32px 20px 60px; flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mandy Wong</a>
+  <a href="index.html#work" class="nav-back">← 所有项目</a>
+</nav>
+
+<div class="hero reveal">
+  <div class="eyebrow">
+    育碧新加坡 <span>·</span> 2019–2022 <span>·</span> 碧海黑帆
+  </div>
+  <h1>让高度受限的系统变得<span class="hl">举重若轻</span></h1>
+  <p class="hero-intro">
+    船只、插槽、武器尺寸、属性——一个玩家根本无法看懂的高约束装备系统。我负责船只定制化的全套UX设计：从<strong>知识库Codex系统</strong>到<strong>装备与外观流程</strong>，将清晰度注入一个天然抵制它的系统。
+  </p>
+</div>
+
+<div class="hero-img reveal">
+  <img src="skull-and-bones-ship-2.png" alt="管理船只界面" />
+  <p class="caption">// 管理船只 — 装备入口。武器、护甲、家具、外观。</p>
+</div>
+
+<div class="meta-bar reveal">
+  <div class="meta-item"><label>公司</label><span>育碧新加坡</span></div>
+  <div class="meta-item"><label>职位</label><span>UX设计师</span></div>
+  <div class="meta-item"><label>平台</label><span>主机 &amp; PC</span></div>
+  <div class="meta-item"><label>时间</label><span>2019 – 2022</span></div>
+</div>
+
+<div class="content">
+
+  <div class="section reveal">
+    <div class="section-label">01 — 问题</div>
+    <h2>玩家根本看不懂的系统</h2>
+    <p>《碧海黑帆》的武器系统高度受限：船只插槽数量固定，武器尺寸各异，不同组合会完全改变玩法风格。玩家根本搞不清楚什么能装备——更不知道为什么某些选项不可用。</p>
+    <p>信息是有的，清晰度没有。而游戏设计师——理所应当地——需要<strong>展示所有数据</strong>：属性、类型、特效、兼容性。这种张力定义了设计挑战。</p>
+    <blockquote><p>「数据都在那里。玩家被一堆与他们当下决策无关的信息淹没了。」</p></blockquote>
+    <div class="img-grid cols-2">
+      <figure>
+        <img src="skull-and-bones-knowledge.png" alt="知识库入口" />
+        <figcaption>// 知识库入口 — 可从HUD随时访问的结构化参考资料库。</figcaption>
+      </figure>
+      <figure>
+        <img src="skull-and-bones-codex.png" alt="Codex分类" />
+        <figcaption>// Codex — 船只、船长工具、武器、护甲，可在装备前提前查阅。</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">02 — 我的职责</div>
+    <h2>玩家与船只之间的每一个界面</h2>
+    <p>我设计了全套定制化界面：Codex知识库系统、管理船只主界面、武器与护甲装备流程、船只外观、更换船只确认弹窗、动作轮盘，以及船长再创建界面。</p>
+    <p>这些不是孤立的页面，而是一个系统。玩家在选择武器时，需要理解船只类型兼容性、插槽限制和属性取舍。挑战在于：在不削减游戏设计师所需信息深度的前提下，让这一切清晰可读。</p>
+    <div class="img-grid cols-3">
+      <figure>
+        <img src="skull-and-bones-codex-2.png" alt="船只属性面板" />
+        <figcaption>// 船只详情 — 含类型、特效、基础属性的数据面板，装备前的参考依据。</figcaption>
+      </figure>
+      <figure>
+        <img src="skull-and-bones-cosmetics.png" alt="船只外观" />
+        <figcaption>// 船只外观 — 套装收集系统，支持实时预览。</figcaption>
+      </figure>
+      <figure>
+        <img src="skull-and-bones-confirmation-2.png" alt="更换船只确认弹窗" />
+        <figcaption>// 更换船只 — 切换前需明确货物处理方案，无破坏性默认操作。</figcaption>
+      </figure>
+    </div>
+    <div class="img-grid cols-2">
+      <figure>
+        <img src="skull-and-bones-wheel.png" alt="动作轮盘" />
+        <figcaption>// 动作轮盘 — 含情境插槽的环形快捷菜单。</figcaption>
+      </figure>
+      <figure>
+        <img src="skull-and-bones-customization.png" alt="船长定制" />
+        <figcaption>// 重建船长 — 基于预设的角色系统，支持实时3D预览。</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">03 — 核心洞察</div>
+    <h2>一个切换按钮。两种心智模型。</h2>
+    <p>经历了至少五轮大迭代——以及与需要展示完整信息的游戏设计师之间真实的张力——突破口其实很简单：玩家不是被信息淹没了，而是被<strong>无关信息</strong>淹没了。</p>
+    <p>「仅显示兼容」与「显示全部」之间的切换按钮，化解了团队争论，同时兼顾了两种截然不同的用户心智模型。新手玩家看到简洁有效的选项，老玩家可以查看所有内容。Codex提供了信息深度，但将其置于决策时刻之外。</p>
+
+    <div class="demo-card">
+      <div class="demo-label">// ship_loadout.ui — 兼容性过滤器</div>
+      <div class="toggle-row">
+        <span>仅显示兼容</span>
+        <div class="pill" id="togglePill" onclick="doToggle()"><div class="knob"></div></div>
+        <span>显示全部</span>
+      </div>
+      <div class="weapon-grid" id="wGrid">
+        <div class="w-slot compat">⚓</div>
+        <div class="w-slot compat">💣</div>
+        <div class="w-slot compat">🔱</div>
+        <div class="w-slot incompat gone ic">⚡</div>
+        <div class="w-slot incompat gone ic">🗡️</div>
+        <div class="w-slot incompat gone ic">🏹</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">04 — 设计过程</div>
+    <h2>原型是对齐团队的共同语言</h2>
+    <p>设计经历了至少五轮大迭代。早期版本密度极高——所有属性全部显示，所有选项一览无余，船只以3D形式渲染，武器插槽直接高亮在船体上。一轮又一轮的玩家测试都指向同一个结论：玩家陷入了选择瘫痪。</p>
+
+    <div class="img-grid cols-3">
+      <figure>
+        <img src="1_0_1_Customization_Screen__Upper_Deck_.png" alt="早期原型：上甲板定制" />
+        <figcaption>// v1 — 3D船只视图，含插槽分类与实时武器提示。</figcaption>
+      </figure>
+      <figure>
+        <img src="1_1_0_Stern__Hovering_Equipped_.png" alt="早期原型：悬停已装备武器" />
+        <figcaption>// 悬停已装备武器 — 属性面板直接浮现在船体上。</figcaption>
+      </figure>
+      <figure>
+        <img src="1_2_1_Stern__Selecting_Item_Equipped_In_Bow_-_Error_.png" alt="早期原型：冲突警告" />
+        <figcaption>// 冲突状态 — 装备已被其他位置占用的武器时，触发全屏警告。</figcaption>
+      </figure>
+    </div>
+
+    <p>与游戏设计师之间的张力并非出于个人立场——他们对系统的理解比任何人都深。解决方法来自原型。一个关键争论是：<strong>自由光标 vs 手柄导航</strong>，两种方式下船只摄像机的响应方式截然不同。我为两种方案分别制作了可交互原型，让团队亲身感受差异，而不是停留在口头争论。</p>
+
+    <div class="img-grid cols-2">
+      <div>
+        <div class="vid-wrap">
+          <video src="AnthemApproach.mp4" controls muted playsinline></video>
+        </div>
+        <p class="vid-label">// 光标操作方案 — 鼠标在3D船只上自由移动。</p>
+      </div>
+      <div>
+        <div class="vid-wrap">
+          <video src="ship-custo-live.mp4" controls muted playsinline preload="metadata"></video>
+        </div>
+        <p class="vid-label">// 手柄导航方案 — 船只旋转至当前聚焦插槽，摄像机跟随操作意图。</p>
+      </div>
+    </div>
+
+    <p>亲眼看到两种方案的差异，把对话从主观意见转变为客观证据。我们的目标是一致的：做一款玩家真正能看懂、真心喜爱的游戏。原型让这个共同目标变得可见。</p>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">05 — 成果</div>
+    <h2>清晰度得以规模化</h2>
+    <div class="outcomes">
+      <div class="outcome-item"><div class="odot"></div><p>在决策点消除无效选项——玩家在装备过程中不再遭遇死胡同</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>设计方案无需改动，即可支持后续所有直播服务内容更新</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>一个切换按钮同时解决了QA反馈和团队内部争议</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Codex系统提供了完整信息深度，且不干扰决策时刻的清晰度</p></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer reveal">
+  <a href="case-guangzai.html">← 让AI行为大规模可读</a>
+  <a href="case-subscription.html">一个页面。所有语言。一套布局。 →</a>
+</div>
+
+<script>
+  let showAll = false;
+  function doToggle() {
+    showAll = !showAll;
+    document.getElementById('togglePill').classList.toggle('on', showAll);
+    document.querySelectorAll('.ic').forEach(s => s.classList.toggle('gone', !showAll));
+  }
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+  (function anim() { rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(anim); })();
+  document.querySelectorAll('a, .pill, .w-slot').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+  document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='0.4'; });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

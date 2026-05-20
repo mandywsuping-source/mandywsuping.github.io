@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光仔系统 — Mandy Wong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f8f8f7;--border:#e8e8e4;--t1:#111110;--t2:#6b6b66;--t3:#b4b4ae;--tq:#2dd4bf;--font:"Geist",sans-serif;--mono:"Geist Mono",monospace;--r:8px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);-webkit-font-smoothing:antialiased;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:60px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.logo{font-weight:700;font-size:15px;color:var(--t1);text-decoration:none;letter-spacing:-0.02em;}
+.back{font-size:13px;color:var(--t2);text-decoration:none;transition:color 0.15s;}
+.back:hover{color:var(--t1);}
+.hero{padding:140px 48px 0;max-width:900px;margin:0 auto;}
+.tag{font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);font-family:var(--mono);margin-bottom:24px;}
+h1{font-size:clamp(40px,6vw,68px);font-weight:800;letter-spacing:-0.04em;line-height:1.0;margin-bottom:28px;}
+h1 em{font-style:normal;color:var(--tq);}
+.tldr{font-size:17px;color:var(--t2);line-height:1.8;max-width:640px;margin-bottom:32px;}
+.tldr strong{color:var(--t1);font-weight:500;}
+.hero-img{margin:32px 0 0;border-radius:10px;overflow:hidden;}
+.hero-img img{width:100%;display:block;}
+.meta{display:flex;gap:48px;padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:0;}
+.mi{display:flex;flex-direction:column;gap:4px;}
+.ml{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);font-family:var(--mono);}
+.mv{font-size:14px;font-weight:500;color:var(--t1);}
+.content{max-width:900px;margin:0 auto;padding:0 48px;}
+.sec{padding:72px 0;border-bottom:1px solid var(--border);}
+.sec:last-child{border-bottom:none;}
+.sl{font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--t3);font-family:var(--mono);margin-bottom:18px;}
+h2{font-size:clamp(22px,3vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.1;margin-bottom:18px;}
+.body{font-size:16px;color:var(--t2);line-height:1.85;max-width:680px;margin-bottom:24px;}
+.body strong{color:var(--t1);font-weight:500;}
+.callout{background:var(--bg2);border-left:3px solid var(--tq);border-radius:0 8px 8px 0;padding:18px 22px;margin:24px 0;}
+.callout p{font-size:15px;color:var(--t1);line-height:1.7;font-style:italic;}
+.ib{margin:32px 0;}
+.ib img{width:100%;display:block;border-radius:var(--r);}
+.ib.bd img{border:1px solid var(--border);}
+.il{font-size:11px;font-family:var(--mono);color:var(--t3);margin-top:8px;letter-spacing:0.04em;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:32px 0;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:32px 0;}
+.g2c{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:24px 0;align-items:start;}
+.pt{width:100%;border-collapse:collapse;margin:28px 0;font-size:14px;}
+.pt th{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);font-family:var(--mono);padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);}
+.pt td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
+.pt tr:last-child td{border-bottom:none;}
+.lv{font-family:var(--mono);font-weight:700;font-size:12px;}
+.l3c{color:#dc2626;} .l2c{color:#d97706;} .l1c{color:#16a34a;}
+.td{color:var(--t2);line-height:1.6;font-size:13px;}
+.te{color:var(--t3);font-size:11px;font-family:var(--mono);margin-top:3px;}
+.oc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;padding-top:40px;border-top:1px solid var(--border);}
+.oi{padding:22px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);}
+.on{font-size:34px;font-weight:800;color:var(--tq);letter-spacing:-0.04em;font-family:var(--mono);}
+.ot{font-size:13px;color:var(--t2);line-height:1.5;margin-top:4px;}
+.next{border-top:1px solid var(--border);padding:60px 48px;max-width:900px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+.nl{font-size:11px;font-family:var(--mono);color:var(--t3);margin-bottom:6px;letter-spacing:0.08em;text-transform:uppercase;}
+.nt{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;}
+.nb{width:50px;height:50px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--t2);text-decoration:none;transition:all 0.2s;flex-shrink:0;}
+.nb:hover{background:var(--t1);color:white;border-color:var(--t1);}
+.rv{opacity:0;transform:translateY(16px);transition:opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+
+.page-footer {
+  max-width: 760px;
+  margin: 80px auto 0;
+  padding: 36px 40px 80px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-footer a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.page-footer a:hover { color: var(--text-1); }
+
+@media(max-width:768px){
+  nav,.hero,.content{padding-left:20px;padding-right:20px;}
+  nav{padding-top:0;padding-bottom:0;}
+  .hero{padding-top:100px;}
+  .meta{flex-wrap:wrap;gap:20px;}
+  .g2,.g3,.g2c,.oc{grid-template-columns:1fr;}
+  .next{padding:40px 20px;flex-direction:column;align-items:flex-start;gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mandy Wong</a>
+  <a href="index.html" class="back">← 所有项目</a>
+</nav>
+
+<div class="hero rv">
+  <div class="tag">腾讯日本 &nbsp;·&nbsp; 2023–2026 &nbsp;·&nbsp; 奥星热浪</div>
+  <h1>让<em>AI行为</em><br>大规模可读</h1>
+  <p class="tldr">《奥星热浪》是一款手机社交游戏，玩家在其中管理一个由AI驱动的伙伴角色「光仔」共同生活的家园。我同时负责<strong>AI优先级逻辑</strong>和让其可见的<strong>UX层设计</strong>——将自主行为转化为玩家能够理解、信任并据此行动的体验。</p>
+  <div class="hero-img">
+    <img src="..." alt="Aostar Guangzai characters" />
+  </div>
+  <div class="meta">
+    <div class="mi"><div class="ml">公司</div><div class="mv">腾讯日本</div></div>
+    <div class="mi"><div class="ml">职位</div><div class="mv">高级UI/UX设计师</div></div>
+    <div class="mi"><div class="ml">平台</div><div class="mv">手机端（iOS & Android）</div></div>
+    <div class="mi"><div class="ml">时间</div><div class="mv">2023 – 2026</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 01 PROBLEM -->
+  <div class="sec rv">
+    <div class="sl">01 — 问题</div>
+    <h2>一个「感觉坏掉了」的智能系统</h2>
+    <p class="body">光仔是由AI驱动的伙伴，它们在玩家的家园中生活、工作并产生各种需求。其行为由一套状态机控制——对玩家而言默认不可见。当光仔在任务中途停下、乱跑或倒地，玩家得不到任何解释。没有理解，便只会怀疑是bug，而非智能。<strong>信任就此崩塌。</strong></p>
+    <p class="body">规模让问题更加棘手：满员情况下，一名玩家需要同时管理<strong>多达20只光仔</strong>，每只都有独立的AI状态和优先级在运行。挑战不在于设计单个角色，而在于为整个系统建立可读性。</p>
+    <div class="callout"><p>「AI行为本身是真实且正常运转的。设计的问题，是让玩家感受到这一点——而不是感到被它抛弃。」</p></div>
+    <div class="ib rv">
+      <img src="..." alt="Homeland interior" style="border-radius:8px;" />
+      <div class="il">// 家园内景——玩家与光仔伙伴。家具摆放影响光仔的需求与行为。</div>
+    </div>
+  </div>
+
+  <!-- 02 WHAT I OWNED -->
+  <div class="sec rv">
+    <div class="sl">02 — 我的职责范围</div>
+    <h2>逻辑与界面，两端全握</h2>
+    <p class="body">大多数UX设计师接手一个现有系统，只负责设计表层。而我同时负责两端。我定义了<strong>AI优先级层级</strong>——决定哪些状态优先响应、紧迫程度如何——再设计将这套规则实时传达给玩家的<strong>UX层</strong>。</p>
+    <p class="body">这与所有AI产品面临的核心挑战直接对应：如何让自主系统的行为，对依赖它的人而言清晰可读、值得信任、可以行动？</p>
+    <div class="g2c rv">
+      <div>
+        <div class="sl" style="margin-bottom:8px;">AI逻辑</div>
+        <p class="body" style="font-size:14px;margin:0;">设计三级优先级体系，规定光仔状态的权重规则、哪些状态可覆盖其他状态，以及需求未被满足时系统如何逐级升级。</p>
+      </div>
+      <div>
+        <div class="sl" style="margin-bottom:8px;">UX层</div>
+        <p class="body" style="font-size:14px;margin:0;">设计每个优先级在世界中的呈现方式——通过气泡、图标、动效和管理界面——让玩家一眼就能读懂系统状态。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 PRIORITY HIERARCHY -->
+  <div class="sec rv">
+    <div class="sl">03 — 优先级层级</div>
+    <h2>三个等级，一套清晰的系统。</h2>
+    <p class="body">20只光仔同时运行，玩家不可能响应所有事件。这套层级确保<strong>关键状态绝对不会被忽视</strong>，而环境状态则可以安全忽略——玩家在不自觉中建立直觉，无需刻意学习。</p>
+    <table class="pt rv">
+      <thead>
+        <tr><th>等级</th><th>名称</th><th>触发条件</th><th>视觉处理</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="lv l3c">L3</span></td>
+          <td><strong>警报</strong></td>
+          <td class="td">危急状态，所有任务中断。<div class="te">需要如厕 · 极度饥饿 · 晕倒 · 设施满载</div></td>
+          <td class="td">红色、脉冲闪烁的醒目气泡，远距离仅显示图标。</td>
+        </tr>
+        <tr>
+          <td><span class="lv l2c">L2</span></td>
+          <td><strong>注意</strong></td>
+          <td class="td">影响行为，但尚不危急。<div class="te">饥饿 · 疲惫 · 梦游 · 设施接近满载</div></td>
+          <td class="td">图标提升，中等动效，远距离不显示。</td>
+        </tr>
+        <tr>
+          <td><span class="lv l1c">L1</span></td>
+          <td><strong>环境</strong></td>
+          <td class="td">正常状态，无需干预。<div class="te">社交 · 休息 · 娱乐</div></td>
+          <td class="td">细小低调的图标，无动效，远距离不显示。</td>
+        </tr>
+      </tbody>
+    </table>
+      </div>
+
+  <!-- 04 CHARACTER NEEDS -->
+  <div class="sec rv">
+    <div class="sl">04 — 光仔角色需求</div>
+    <h2>让角色状态在世界中清晰可读</h2>
+    <p class="body">每只光仔都有三项核心需求——<strong>能量、食物和心情</strong>——会随时间逐渐消耗。我设计了每种状态在不同优先级下的世界内呈现方式。最棘手的问题：梦游和晕倒在视觉上相似，但需要完全不同的应对。一旦区分错误，整套信任体系将全面崩盘。</p>
+    <div class="g3 rv">
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Bathroom urgent" style="width:100%;display:block;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#fee2e2;color:#dc2626;">L3 Alert</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">如厕紧急</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">红色气泡，脉冲闪烁。若无可用设施则持续升级。</div>
+        </div>
+      </div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Fainting" style="width:100%;display:block;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#fee2e2;color:#dc2626;">L3 Alert</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">晕倒</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">倒地状态。动效与梦游明显区分，需立即响应。</div>
+        </div>
+      </div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Dreaming / Sleepwalking" style="width:100%;display:block;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#fef3c7;color:#d97706;">L2 Notice</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">梦游 / 说梦话</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">睡眠中游走说话，无危险——视觉效果与晕倒明显区分。</div>
+        </div>
+      </div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Hungry / Tired" style="width:100%;display:block;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#fef3c7;color:#d97706;">L2 Notice</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">饥饿 / 疲惫</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">表情对话气泡——情绪信号在数值进入危急前提前出现。</div>
+        </div>
+      </div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Sleeping on bed" style="width:100%;display:block;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#dcfce7;color:#16a34a;">L1 Ambient</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">在床上睡觉</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">能量恢复中（+10）。光仔自主休息，无需玩家干预。</div>
+        </div>
+      </div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Normal" style="width:100%;display:block;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#dcfce7;color:#16a34a;">L1 Ambient</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">正常</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">仅显示对话气泡，无紧迫感。光仔状态良好——可安全忽略。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 FACILITY ALERTS -->
+  <div class="sec rv">
+    <div class="sl">05 — 设施警报</div>
+    <h2>当环境需要关注时</h2>
+    <p class="body">独立于角色需求，设施——卫生间、床铺、娱乐区——同样有自己的状态。我设计了一套专属的设施警报系统，让玩家能立即区分<strong>「是光仔有问题」</strong>还是<strong>「是设施有问题」</strong>。</p>
+    <div class="g2 rv">
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Facility full alert" style="width:100%;display:block;border-radius:8px;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#fee2e2;color:#dc2626;">L3 Alert</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">设施可用</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">若设施未被光仔占用，玩家可自行使用。玩家靠近时将显示完整操作选项。</div>
+        </div>
+      </div>
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e8e4;">
+        <img src="..." alt="Guangzai needs facility" style="width:100%;display:block;border-radius:8px;" />
+        <div style="padding:12px 14px;background:#f8f8f7;">
+          <div style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:6px;font-family:'Geist Mono',monospace;background:#fee2e2;color:#dc2626;">L3 Alert</div>
+          <div style="font-size:13px;font-weight:600;color:#111110;margin-bottom:3px;">光仔需要设施</div>
+          <div style="font-size:11px;color:#6b6b66;line-height:1.4;">光仔无法使用该设施，玩家必须介入——清洁、升级或重新引导。</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><p>「角色警报与设施警报的分离是刻意为之——玩家需要知道的不只是出了问题，更要知道问题究竟出在哪里。」</p></div>
+  </div>
+
+  <!-- 06 STATUS SCREEN -->
+  <div class="sec rv">
+    <div class="sl">06 — 状态界面与响应流程</div>
+    <h2>从警报到理解，再到行动</h2>
+    <p class="body">世界中的气泡传递「有事发生」的信号，状态界面则告诉玩家具体是什么——并提供应对工具。我设计了完整流程：需求进度条、情境化操作菜单、喂食、空状态，以及操作后的反馈确认。</p>
+    <div class="ib bd rv">
+      <img src="..." alt="Status screen — energy, food, mood meters + contextual action menu" style="width:100%;display:block;border-radius:8px;" />
+      <div class="il">// 状态界面——三项需求进度条一目了然，操作菜单根据光仔当前状态动态适配</div>
+    </div>
+    <div class="g2 rv">
+      <div>
+        <img src="..." alt="Empty state — no food available" style="width:100%;display:block;border-radius:8px;" />
+        <div class="il">// 空状态——提示玩家先去烹饪，形成资源闭环</div>
+      </div>
+    </div>
+    <div class="ib rv">
+      <img src="..." alt="Post-feeding — Guangzai personality dialogue confirms success" style="width:100%;display:block;border-radius:8px;" />
+      <div class="il">// 喂食后的反馈——由光仔个性驱动的对话，让交互充满意义</div>
+    </div>
+  </div>
+
+  <!-- 07 MANAGEMENT -->
+  <div class="sec rv">
+    <div class="sl">07 — 管理系统</div>
+    <h2>完整的名单总览</h2>
+    <p class="body">玩家需要一个专属的总览界面，查看所有光仔的状态——谁在工作、谁需要关注、谁处于空闲——并根据每个角色的技能、个性和稀有度做出任务分配决策。</p>
+    <div class="ib rv">
+      <img src="..." alt="Overview screen — daily summary, roster with titles, slot count" style="width:100%;display:block;border-radius:8px;" />
+      <div class="il">// 总览主界面——每日根据家园运营数据刷新</div>
+    </div>
+    <div class="g2 rv">
+      <div>
+        <img src="..." alt="Character detail — attributes, skills, personality" style="width:100%;display:block;border-radius:8px;" />
+        <div class="il">// 角色详情——支持有据可依的任务分配决策</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 OUTCOMES -->
+  <div class="sec rv">
+    <div class="sl">08 — 成果</div>
+    <h2>上线了什么，意味着什么</h2>
+    <p class="body">光仔系统在测试阶段正式上线，成为《奥星热浪》家园体验的核心差异化亮点。L1/L2/L3优先级框架成为项目中所有后续状态类UI的参考标准。</p>
+    <div class="oc">
+      <div class="oi"><div class="on">20</div><div class="ot">同时在线的AI角色——每个都有独立状态机，设计为实时可读</div></div>
+      <div class="oi"><div class="on">3</div><div class="ot">从零构建的优先级层级——成为项目全局所有状态类UI的设计标准</div></div>
+      <div class="oi"><div class="on">2×</div><div class="ot">双重设计归属——同时负责AI逻辑与UX层，是罕见的完整产品贡献</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer reveal">
+  <a href="case-aostar.html">← 快乐老家 — 从零构建一个有生命的世界</a>
+  <a href="case-skullandbones.html">让高度受限的系统变得举重若轻 →</a>
+</div>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, {threshold:0.06, rootMargin:'0px 0px -32px 0px'});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+
+<section class="sec rv">
+  <div class="sl">系统逻辑</div>
+  <h2>优先级可视化系统</h2>
+  <p class="body">
+    玩家需要清晰了解光仔的任务状态、交互范围以及家具状态的可见性规则。
+  </p>
+
+  <div class="ib bd">
+    <img src="images/priority-matrix.png" alt="光仔优先级矩阵">
+    <div class="il">光仔与家具活动优先级矩阵</div>
+  </div>
+</section>
+
+</body>
+</html>

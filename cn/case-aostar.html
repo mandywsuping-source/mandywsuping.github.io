@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>奥星热浪 · 快乐老家 — Mandy Wong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-2: #f8f8f7;
+  --border: #e8e8e4;
+  --text-1: #111110;
+  --text-2: #6b6b66;
+  --text-3: #b4b4ae;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: 'Geist', -apple-system, 'PingFang SC', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --turquoise: #2dd4bf;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text-1); font-family: var(--font); font-size: 15px; line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+#cursorDot { position: fixed; z-index: 9999; width: 6px; height: 6px; background: var(--text-1); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); }
+#cursorRing { position: fixed; z-index: 9998; width: 28px; height: 28px; border: 1.5px solid var(--text-1); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; opacity: 0.4; }
+#cursorRing.hovering { width: 40px; height: 40px; opacity: 0.25; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; height: 60px; background: rgba(255,255,255,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-weight: 700; font-size: 15px; color: var(--text-1); text-decoration: none; letter-spacing: -0.02em; }
+.nav-back { font-size: 14px; color: var(--text-2); text-decoration: none; transition: color 0.15s; }
+.nav-back:hover { color: var(--text-1); }
+
+.hero { padding: 120px 40px 64px; max-width: 760px; margin: 0 auto; }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.eyebrow span { opacity: 0.5; }
+h1 { font-size: clamp(36px, 5.5vw, 64px); font-weight: 800; line-height: 1.04; letter-spacing: -0.04em; color: var(--text-1); margin-bottom: 28px; }
+h1 .hl { color: var(--turquoise); }
+.hero-intro { font-size: 17px; line-height: 1.75; color: var(--text-2); max-width: 620px; }
+.hero-intro strong { font-weight: 600; color: var(--text-1); }
+
+.meta-bar { max-width: 760px; margin: 56px auto 0; padding: 28px 40px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.meta-item label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+.meta-item span { font-size: 14px; font-weight: 600; color: var(--text-1); }
+
+.content { max-width: 760px; margin: 0 auto; padding: 0 40px; }
+.section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.section h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; color: var(--text-1); margin-bottom: 16px; }
+.section p { font-size: 16px; line-height: 1.8; color: var(--text-2); margin-bottom: 16px; }
+.section p:last-child { margin-bottom: 0; }
+.section p strong { font-weight: 600; color: var(--text-1); }
+
+.slides { display: flex; flex-direction: column; gap: 12px; margin: 32px 0 0; }
+.slide-wrap img { width: 100%; display: block; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.slide-caption { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-top: 8px; line-height: 1.5; }
+
+.page-footer { max-width: 760px; margin: 80px auto 0; padding: 36px 40px 80px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.page-footer a { font-size: 14px; font-weight: 500; color: var(--text-2); text-decoration: none; transition: color 0.15s; }
+.page-footer a:hover { color: var(--text-1); }
+
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 680px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 96px 20px 48px; }
+  .meta-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+  .content { padding: 0 20px; }
+  .page-footer { padding: 32px 20px 60px; flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mandy Wong</a>
+  <a href="index.html#work" class="nav-back">← 所有项目</a>
+</nav>
+
+<div class="hero reveal">
+  <div class="eyebrow">
+    腾讯日本 <span>·</span> 2023年至今 <span>·</span> 奥星热浪
+  </div>
+  <h1>快乐老家 — 从零构建一个<span class="hl">有生命的世界</span></h1>
+  <p class="hero-intro">
+    《奥星热浪》是一款大型手游社交平台，玩家在其中建造和管理属于自己的家园，并与被称为「光仔」的AI伙伴共同生活。我负责「快乐老家」的<strong>全套交互设计规范</strong>，覆盖建造、种植、制作合成、光仔AI、进阶解锁及UI交互规则六大互联系统。
+  </p>
+</div>
+
+<div class="meta-bar reveal">
+  <div class="meta-item"><label>公司</label><span>腾讯日本</span></div>
+  <div class="meta-item"><label>职位</label><span>高级UI/UX设计师</span></div>
+  <div class="meta-item"><label>平台</label><span>手机端（iOS & Android）</span></div>
+  <div class="meta-item"><label>时间</label><span>2023年 – 至今</span></div>
+</div>
+
+<div class="content">
+
+  <div class="section reveal">
+    <div class="section-label">00 — 项目概述</div>
+    <h2>一套设计规范，六个互联系统</h2>
+    <p>「快乐老家」是《奥星热浪》的核心玩法。玩家在这里建造房间、种植作物、制作道具、烹饪食物，并照料AI伙伴：这一切共同构成一个持续运转的共享世界。设计挑战在于：让所有系统在视觉和交互上保持统一、易于学习，同时不让玩家感到负担过重。</p>
+    <p>我完整输出了《快乐老家交互设计规范》：一份覆盖UI行为规则、组件规格、状态定义及各系统交互模式的设计基准文档。每一个交互都需要同时服务于新手玩家和资深玩家两种心智模型。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-5.png" alt="快乐老家交互设计规范目录" />
+        <p class="slide-caption">// 设计规范目录：横跨6大系统、30余个子章节的完整交互指南。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">01 — 通用家园</div>
+    <h2>家园通用层：HUD信息架构</h2>
+    <p>家园体验的最上层负责处理与3D世界共存的常驻UI元素：任务追踪、光仔交互按钮、导航指示及情境提示。核心挑战是<strong>在不遮挡世界的前提下保持画面可读</strong>。</p>
+    <p>我制定了多提示同时显示的优先级规则、基于距离的可见性逻辑，以及三级警示系统（L1/L2/L3）：根据光仔状态决定信息以何种紧迫程度呈现给玩家。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-6.png" alt="通用家园HUD布局" />
+        <p class="slide-caption">// 通用家园HUD：任务/订单追踪器、光仔交互按钮、建造快捷入口及距离提示指示器。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-8.png" alt="L1/L2/L3三级警示系统" />
+        <p class="slide-caption">// 三级警示系统：L3紧急（光仔晕倒）、L2注意（光仔梦游）、L1普通（基础交互提示）。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-9.png" alt="功能家具与光仔家具交互状态" />
+        <p class="slide-caption">// 家具交互状态：功能家具（制作台、烹饪台）与光仔家具（床、椅子）的远近距离可见性规则。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-10.png" alt="家具近距离交互" />
+        <p class="slide-caption">// 距离触发交互：家具标签与操作选项仅在玩家靠近到可操作范围内时才会显示。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-11.png" alt="光仔状态显示" />
+        <p class="slide-caption">// 光仔状态：根据玩家距离及情绪状态动态切换的光仔显示层级。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-12.png" alt="光仔气泡规则" />
+        <p class="slide-caption">// 光仔气泡规则：触发条件、优先级叠加、按需求类型（能量/饥食/心情）区分颜色编码。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-13.png" alt="光仔气泡暂时规则" />
+        <p class="slide-caption">// 临时气泡显示：光仔完成动作或需要即时关注时触发的短时反馈。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-14.png" alt="家园tips优先级系统" />
+        <p class="slide-caption">// 提示优先级：种植类提示（最高）→ 家具交互提示 → 光仔状态提示（最低），避免信息过载。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-15.png" alt="提示重叠优化前后对比" />
+        <p class="slide-caption">// 优化前后对比：左：当前状态（提示堆叠混乱）；右：基于优先级的整洁布局。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-16.png" alt="种植交互状态" />
+        <p class="slide-caption">// 种植交互：受虫害影响、浇水、收获三种状态，配合距离感应工具显示逻辑。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">02 — UI交互规则</div>
+    <h2>UI交互规则：设计系统的骨架</h2>
+    <p>本章节定义了贯穿所有家园系统的通用交互语言：触控目标尺寸、操作面板行为、状态反馈模式、弹窗与确认流程、错误处理及输入控件规范。</p>
+    <p>无论视觉大小如何，所有触控目标最小触控区域统一设定为<strong>108×108px</strong>，确保在各种设备尺寸下的可及性。操作面板在选择工具后自动收起，并记忆上次使用的标签，减少重复导航操作。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-17.png" alt="控件尺寸规范" />
+        <p class="slide-caption">// 控件规范：可视尺寸最小80×80px，触控区域最小108×108px，统一应用于所有可交互元素。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-2.png" alt="操作面板：工具/种植/其他标签及状态变体" />
+        <p class="slide-caption">// 操作面板：情境感知标签（工具 / 种植 / 其他），根据靠近的可交互物体自动切换。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-3.png" alt="操作类型：默认、可操作、无操作状态" />
+        <p class="slide-caption">// 操作类型：默认、可操作（金色光圈）、无法操作（红色）。工具状态一目了然。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-4.png" alt="可操作类型矩阵" />
+        <p class="slide-caption">// 可操作类型矩阵：可交互、可取消、无法操作三种状态及对应视觉反馈规则。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-18.png" alt="弹窗系统：六种对话框类型" />
+        <p class="slide-caption">// 弹窗系统：六种对话框类型：编辑数量、材料需求、确认提示、地块解锁、物品转移及中断警告。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-21.png" alt="家园等级进度及提示系统" />
+        <p class="slide-caption">// 家园等级进度条：可提升状态带视觉脉冲动效。提示系统涵盖错误、成功及状态通知三类场景。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">03 — 光仔系统</div>
+    <h2>光仔系统：大规模AI行为的可视化设计</h2>
+    <p>光仔是在家园中生活、工作并产生需求的AI伙伴。单个玩家最多可同时管理10只光仔，每只光仔都有独立的状态、属性和任务队列。我设计了完整的管理界面：从光仔名单到个人属性面板、对话流程及订单系统。</p>
+    <p>核心挑战是：<strong>让AI行为对玩家透明可信</strong>，同时不暴露过于复杂的底层逻辑。属性展示、情绪状态指示以及光仔对话选项，都需要在恰当的时机传递恰当的信息量。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-22.png" alt="光仔管理面板" />
+        <p class="slide-caption">// 光仔管理面板：老家/背包双区名单、筛选系统、个人属性面板与管理/简历双标签。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-23.png" alt="光仔属性与特性面板" />
+        <p class="slide-caption">// 属性 & 特性：光仔数值、特性标签及获得界面，含新角色引导流程展示。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-24.png" alt="光仔对话：家园光仔与随行光仔" />
+        <p class="slide-caption">// 光仔对话：家园光仔与随行光仔根据所处情境与位置提供不同的对话选项。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-25.png" alt="光仔交互：核心属性、工具、对话选项" />
+        <p class="slide-caption">// 光仔交互：核心属性展示、道具工具入口、情境化对话选择（按光仔类型动态变化）。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-26.png" alt="光仔订单系统" />
+        <p class="slide-caption">// 光仔订单系统：订单状态（待接取/进行中/已完成）、每日刷新规则及光仔互助站界面。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-27.png" alt="自选提交流程" />
+        <p class="slide-caption">// 自选提交：玩家主动交付物品的流程，含材料匹配界面及NPC对话整合。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">04 — 种植系统</div>
+    <h2>种植系统：将种植的复杂性化繁为简</h2>
+    <p>种植系统贯穿种子购买、作物生长阶段、收获、烹饪到储存的完整资源循环。每个阶段都有独特的视觉状态和交互提示，需要在繁忙的3D环境中做到清晰易读。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-28.png" alt="种植状态矩阵" />
+        <p class="slide-caption">// 种植状态矩阵：空地 → 播种 → 生长期（良好/虫害/缺水）→ 收获。各阶段可操作与不可操作工具状态对应。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-29.png" alt="种子商店" />
+        <p class="slide-caption">// 种子商店：按光仔类型筛选，购买状态涵盖：默认、钱不足、有上限、售罄、已锁定等级、已锁定NPC。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-30.png" alt="烹饪系统" />
+        <p class="slide-caption">// 烹饪台：菜谱卡片、星级成长路径、材料需求，以及光仔协助烹饪时的特殊状态。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-31.png" alt="储物家具" />
+        <p class="slide-caption">// 储物家具：不同家具类型及容量状态下的储物界面规范。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-32.png" alt="收获品质状态" />
+        <p class="slide-caption">// 收获品质变体：作物卡片展示稀有度等级、光仔能力影响及品质概率显示。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-33.png" alt="收获视觉反馈状态" />
+        <p class="slide-caption">// 收获视觉反馈：提示徽章从「普通」到「超级传说」的品质升级，配合粒子特效呈现。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">05 — 建造系统</div>
+    <h2>建造系统：家具、制作合成与房间逻辑</h2>
+    <p>建造系统允许玩家放置家具、制作道具，并随进度解锁新地块和房间。我设计了制作台界面、物品提示系统、放置逻辑及房间信息面板，确保系统能从初始地块平滑扩展至完整发展的家园。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-34.png" alt="制作台界面" />
+        <p class="slide-caption">// 制作台：物品预览、配方提示、材料需求清单及一键制造按钮。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-35.png" alt="建造系统放置逻辑：家具负载与上限" />
+        <p class="slide-caption">// 放置逻辑：家具负载显示、功能家具上限提示，以及家具放置/移动/旋转/收回操作界面。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-36.png" alt="建造系统放置操作与颜色反馈" />
+        <p class="slide-caption">// 放置操作：放置/移动/旋转/取消/收回操作按钮，配合绿色（可放置）、红色（不可放置）颜色反馈。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">06 — 进阶系统</div>
+    <h2>进阶系统：解锁一个不断成长的世界</h2>
+    <p>随着玩家深耕家园，他们将逐步解锁新地块、家具升阶和工具改进。进阶系统通过等级地图、升级预览及升级成功的动效庆典，让每一次成长都充满成就感。</p>
+    <div class="slides">
+      <div class="slide-wrap">
+        <img src="aostar-1.png" alt="种子包商店状态矩阵" />
+        <p class="slide-caption">// 种子包商店状态矩阵：跨光仔、种植、服装、家具四类种子包的默认、钱不足、有上限、售罄、等级锁定、NPC锁定全状态展示。</p>
+      </div>
+      <div class="slide-wrap">
+        <img src="aostar-7.png" alt="愉悦等级进阶面板" />
+        <p class="slide-caption">// 愉悦等级：含当前/下一级预览、解锁内容列表、升级奖励及升级成功动效庆典的完整进阶面板。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer reveal">
+  <a href="index.html#work">← 所有项目</a>
+  <a href="case-guangzai.html">让AI行为大规模可读 →</a>
+</div>
+
+<script>
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+  (function anim() {
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+  document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='0.4'; });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
