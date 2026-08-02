@@ -255,24 +255,14 @@ blockquote p {
   line-height: 1.5;
 }
 
-/* IMAGE PLACEHOLDERS  ——  replace each .img-ph with a real <img>. See HTML comments. */
-.img-ph {
+/* STANDALONE SECTION IMAGE */
+.section-img {
   width: 100%;
+  display: block;
   border-radius: var(--radius-sm);
-  border: 1px dashed var(--border-2);
-  background: repeating-linear-gradient(45deg, var(--bg-2), var(--bg-2) 10px, #f2f2ef 10px, #f2f2ef 20px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  text-align: center;
-  padding: 20px;
-  font-family: var(--font-mono);
+  border: 1px solid var(--border);
+  margin: 36px 0;
 }
-.img-ph .fn { font-size: 12px; font-weight: 500; color: var(--text-2); }
-.img-ph .dim { font-size: 10px; color: var(--text-3); letter-spacing: 0.04em; }
-.hero-img .img-ph { border-radius: var(--radius); }
 
 /* DEMO CARD */
 .demo-card {
@@ -456,10 +446,6 @@ blockquote p {
 
 <div class="hero-img reveal">
   <img src="chat-hero.png" alt="In-game chat system" />
-  <div class="img-ph" style="aspect-ratio:16/9;">
-    <div class="fn">chat-hero.png</div>
-    <div class="dim">HERO · landscape · ~1600 × 900</div>
-  </div>
   <p class="caption">// The chat system across game contexts — world, island, room, match.</p>
 </div>
 
@@ -480,11 +466,7 @@ blockquote p {
     <p>Those inconsistencies, plus constant notifications, made the system easy to ignore. As sole designer, I owned it end-to-end across <strong>10+ stakeholders</strong>.</p>
     <blockquote><p>"Same feature, different place, different behaviour on every screen — players stopped trusting where chat would even appear."</p></blockquote>
 
-    <img src="chat-problem.png" alt="Chat across many contexts" />
-    <div class="img-ph" style="aspect-ratio:16/10; margin:36px 0;">
-      <div class="fn">chat-problem.png</div>
-      <div class="dim">PROBLEM · landscape collage · ~1200 × 760</div>
-    </div>
+    <img class="section-img" src="chat-problem.png" alt="Chat across many contexts" />
   </div>
 
   <!-- 02 CHALLENGE -->
@@ -493,20 +475,17 @@ blockquote p {
     <h2>Same system, three contexts</h2>
     <p>Chat lived in three contexts — <strong>Room, Match, and World</strong> — each surfacing two channels at a time. The same system had to feel native in all three: a full panel when idle, lightweight quick-access during a fast 10-second match.</p>
 
-    <div class="img-grid cols-3">
+    <div class="img-grid">
       <figure>
         <img src="chat-room.png" alt="Room context" />
-        <div class="img-ph" style="aspect-ratio:16/10;"><div class="fn">chat-room.png</div><div class="dim">~760 × 480</div></div>
         <figcaption>// Room — Room + Team channels, coordinating before a match.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="chat-match.png" alt="Match context" />  ·  ~760 × 480 -->
-        <div class="img-ph" style="aspect-ratio:16/10;"><div class="fn">chat-match.png</div><div class="dim">~760 × 480</div></div>
+        <img src="chat-match.png" alt="Match context" />
         <figcaption>// Match — Team + quick-chat, inside the 10-second match.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="chat-world.png" alt="World context" />  ·  ~760 × 480 -->
-        <div class="img-ph" style="aspect-ratio:16/10;"><div class="fn">chat-world.png</div><div class="dim">~760 × 480</div></div>
+        <img src="chat-world.png" alt="World context" />
         <figcaption>// World — World + Island channels, out on the open map.</figcaption>
       </figure>
     </div>
@@ -533,11 +512,7 @@ blockquote p {
     <p>With 10+ stakeholders, layout and button placement were debated heavily — chat popped up on both the left and right across contexts, so consistency was a constant fight that cost many iterations.</p>
     <p>My honest takeaway: I hadn't aligned on goals early enough. <strong>Adding an alignment checkpoint upfront</strong> sharply reduced the back-and-forth later.</p>
 
-    <img src="chat-process.png" alt="Chat popup on the open map" /> 
-    <div class="img-ph" style="aspect-ratio:16/10; margin:36px 0;">
-      <div class="fn">chat-process.png</div>
-      <div class="dim">PROCESS · landscape · ~1200 × 760</div>
-    </div>
+    <img class="section-img" src="chat-process.png" alt="Chat popup on the open map" />
   </div>
 
   <!-- 04 SOLUTION -->
@@ -546,20 +521,17 @@ blockquote p {
     <h2>Designed for speed in fast play</h2>
     <p>Free typing doesn't fit a 10-second match — so every input is fast and contextual. Rounded out with <strong>@mentions, tappable player cards, and team colour-coding</strong>.</p>
 
-    <div class="img-grid cols-3">
+    <div class="img-grid">
       <figure>
         <img src="chat-quicktext.png" alt="Quick-text presets" />
-        <div class="img-ph" style="aspect-ratio:16/10;"><div class="fn">chat-quicktext.png</div><div class="dim">~760 × 480</div></div>
         <figcaption>// Quick-text presets — tap a phrase mid-match, no keyboard, no delay.</figcaption>
       </figure>
       <figure>
         <img src="chat-stickers.png" alt="Stickers and emoji" />
-        <div class="img-ph" style="aspect-ratio:16/10;"><div class="fn">chat-stickers.png</div><div class="dim">~760 × 480</div></div>
         <figcaption>// Stickers & emoji — express in a single tap when there's no time to type.</figcaption>
       </figure>
       <figure>
         <img src="chat-speech.png" alt="Speech to text" />
-        <div class="img-ph" style="aspect-ratio:16/10;"><div class="fn">chat-speech.png</div><div class="dim">~760 × 480</div></div>
         <figcaption>// Speech-to-text — speak instead of type when hands are busy playing.</figcaption>
       </figure>
     </div>
@@ -594,18 +566,14 @@ blockquote p {
       <div class="outcome-item"><div class="odot"></div><p>Follow-on: stakeholders added a daily-gift events page to further drive chat open rates</p></div>
     </div>
 
-    <img src="chat-impact.png" alt="Daily-gift events page" />
-    <div class="img-ph" style="aspect-ratio:16/10; margin:36px 0 0;">
-      <div class="fn">chat-impact.png</div>
-      <div class="dim">IMPACT · landscape · ~1200 × 760</div>
-    </div>
+    <img class="section-img" src="chat-impact.png" alt="Daily-gift events page" style="margin:36px 0 0;" />
   </div>
 
 </div>
 
 <div class="page-footer reveal">
   <a href="case-guangzai.html">← Making AI behaviour legible at scale</a>
-  <a href="case-store-events.html">A shop and events layer built to grow with the game →</a>
+  <a href="case-skullandbones.html">Making a constrained system feel effortless →</a>
 </div>
 
 <script>
