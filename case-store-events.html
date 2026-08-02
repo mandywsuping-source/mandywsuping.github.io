@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store &amp; Events — Mandy Wong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-2: #f8f8f7;
+  --border: #e8e8e4;
+  --border-2: #d4d4ce;
+  --text-1: #111110;
+  --text-2: #6b6b66;
+  --text-3: #b4b4ae;
+  --tag-bg: #f0f0ec;
+  --tag-text: #6b6b66;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: 'Geist', -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --turquoise: #2dd4bf;
+  --green: #22c55e;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --screen: 2515/1161; /* real in-game landscape ratio */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CURSOR */
+#cursorDot {
+  position: fixed; z-index: 9999;
+  width: 6px; height: 6px;
+  background: var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+#cursorRing {
+  position: fixed; z-index: 9998;
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.2s;
+  opacity: 0.4;
+}
+#cursorRing.hovering { width: 40px; height: 40px; opacity: 0.25; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 60px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-1);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.nav-back {
+  font-size: 14px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-back:hover { color: var(--text-1); }
+
+/* HERO */
+.hero {
+  padding: 120px 40px 64px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow span { opacity: 0.5; }
+
+h1 {
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  margin-bottom: 28px;
+}
+h1 .hl { color: var(--turquoise); }
+
+.hero-intro {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-2);
+  max-width: 620px;
+}
+.hero-intro strong { font-weight: 600; color: var(--text-1); }
+
+/* HERO IMAGE */
+.hero-img {
+  max-width: 760px;
+  margin: 48px auto 0;
+  padding: 0 40px;
+}
+.hero-img img {
+  width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: block;
+}
+.caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 10px;
+}
+
+/* META BAR */
+.meta-bar {
+  max-width: 760px;
+  margin: 56px auto 0;
+  padding: 28px 40px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.meta-item label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.meta-item span {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+
+/* CONTENT */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-1);
+  margin-bottom: 20px;
+}
+
+.section p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.section p:last-child { margin-bottom: 0; }
+.section p strong { font-weight: 600; color: var(--text-1); }
+
+/* BLOCKQUOTE */
+blockquote {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: var(--bg-2);
+  border-left: 2px solid var(--border-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+blockquote p {
+  font-size: 15px !important;
+  font-style: italic;
+  color: var(--text-2) !important;
+  margin: 0 !important;
+  line-height: 1.65 !important;
+}
+
+/* IMAGE GRIDS */
+.img-grid { display: grid; gap: 12px; margin: 36px 0; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.img-grid figure img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.img-grid figcaption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* IMAGE PLACEHOLDERS  ——  replace each .img-ph with a real <img>. See HTML comments. */
+.img-ph {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-2);
+  background: repeating-linear-gradient(45deg, var(--bg-2), var(--bg-2) 10px, #f2f2ef 10px, #f2f2ef 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  padding: 20px;
+  font-family: var(--font-mono);
+}
+.img-ph .fn { font-size: 12px; font-weight: 500; color: var(--text-2); }
+.img-ph .dim { font-size: 10px; color: var(--text-3); letter-spacing: 0.04em; }
+.hero-img .img-ph { border-radius: var(--radius); }
+
+/* OUTCOMES */
+.outcomes { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.odot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-3);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+.outcome-item p {
+  font-size: 14px !important;
+  color: var(--text-1) !important;
+  margin: 0 !important;
+  line-height: 1.55 !important;
+}
+
+/* BIG STAT */
+.stat-row { display: flex; gap: 40px; flex-wrap: wrap; margin: 8px 0 28px; }
+.stat-big {
+  font-size: clamp(40px, 7vw, 68px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--turquoise);
+}
+.stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 10px;
+}
+
+/* FOOTER NAV */
+.page-footer {
+  max-width: 760px;
+  margin: 80px auto 0;
+  padding: 36px 40px 80px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-footer a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.page-footer a:hover { color: var(--text-1); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 680px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 96px 20px 48px; }
+  .hero-img { padding: 0 20px; }
+  .meta-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+  .content { padding: 0 20px; }
+  .cols-2, .cols-3 { grid-template-columns: 1fr; }
+  .page-footer { padding: 32px 20px 60px; flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mandy Wong</a>
+  <a href="index.html#work" class="nav-back">← All work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero reveal">
+  <div class="eyebrow">
+    TENCENT JAPAN <span>·</span> 2023–2026 <span>·</span> STORE &amp; EVENTS
+  </div>
+  <h1>A shop and events layer built to <span class="hl">grow with the game</span></h1>
+  <p class="hero-intro">
+    The party game's <strong>小卖部 (Shop)</strong> and <strong>奥星活动中心 (Activity Center)</strong> carry retention and monetisation: a store that sells creature skins, avatar outfits, props and gacha-style gift packs across multiple currencies — and an events hub, restructured as event types outgrew the old layout, that makes daily activities easy to find and loops players back into the shop. As <strong>sole designer</strong>, I built both as component systems that hold new items, states, currencies and campaigns without a redesign each time.
+  </p>
+</div>
+
+<div class="hero-img reveal">
+  <!-- REPLACE with: <img src="store-hero.png" alt="Shop featured page" />  ·  in-game landscape, ~2515 × 1161 -->
+  <div class="img-ph" style="aspect-ratio:var(--screen);">
+    <div class="fn">store-hero.png</div>
+    <div class="dim">HERO · 小卖部 推荐页 · landscape · ~2515 × 1161</div>
+  </div>
+  <p class="caption">// The Shop's featured page — event banner, super gift pack, and character preview.</p>
+</div>
+
+<div class="meta-bar reveal">
+  <div class="meta-item"><label>Company</label><span>Tencent Japan</span></div>
+  <div class="meta-item"><label>Role</label><span>Sole UX Designer</span></div>
+  <div class="meta-item"><label>Platform</label><span>Mobile</span></div>
+  <div class="meta-item"><label>Scope</label><span>Shop + Events</span></div>
+</div>
+
+<div class="content">
+
+  <!-- 01 PROBLEM -->
+  <div class="section reveal">
+    <div class="section-label">01 — PROBLEM</div>
+    <h2>Two live systems that never stop growing</h2>
+    <p>A live game's shop and events are never finished — new skins, discounted bundles, seasonal gift packs and fresh campaigns ship constantly. The design couldn't be a fixed set of screens; it had to be <strong>components that scale</strong>: one shelf that holds three items or thirty, one item card that carries every state, one price slot that accepts any currency, and one event template that reskins per campaign.</p>
+    <p>The events side had a specific trigger: <strong>event types had grown past what the old layout could clearly hold</strong>. The brief was to restructure the activity center so players could actually find and join what was live. So the shop had to stay browsable as the catalogue grew, and the events hub had to make daily return feel worth it — then route players back to spend.</p>
+    <blockquote><p>"Every new item, currency and campaign shouldn't need a new layout — the shelf, the card and the event should already know how to hold it."</p></blockquote>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <!-- REPLACE with: <img src="store-flow-overview.png" alt="Shop interaction flow" />  ·  tall flow diagram, portrait -->
+        <div class="img-ph" style="aspect-ratio:3/4;"><div class="fn">store-flow-overview.png</div><div class="dim">商城系统 交互图 · portrait</div></div>
+        <figcaption>// Shop system — full interaction map.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="events-flow-overview.png" alt="Events interaction flow" />  ·  tall flow diagram, portrait -->
+        <div class="img-ph" style="aspect-ratio:3/4;"><div class="fn">events-flow-overview.png</div><div class="dim">奥星活动中心 交互图 · portrait</div></div>
+        <figcaption>// Activity center — full interaction map.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- 02 THE SHOP -->
+  <div class="section reveal">
+    <div class="section-label">02 — THE SHOP · 小卖部</div>
+    <h2>A featured page, four shelves, one item card</h2>
+    <p>The Shop opens on the <strong>推荐页 (Featured page)</strong>: a collapsible <strong>event banner</strong> up top, a featured-item carousel with a live character preview, a <strong>超级礼包 (super gift pack)</strong> shelf, and an <strong>活动引导 (event guide)</strong> that links straight into the events hub. Below it, four category shelves — <strong>小光仔 (creatures), 人类装扮 (avatar outfits), 上衣/裤子 (tops, bottoms), 道具 (props)</strong> — all reuse the same grid.</p>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <!-- REPLACE with: <img src="store-featured.png" alt="Featured page" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-featured.png</div><div class="dim">推荐页 · ~2515 × 1161</div></div>
+        <figcaption>// Featured page — collapsible event banner, super gift pack, event guide.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="store-tabs.png" alt="Category shelves" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-tabs.png</div><div class="dim">人类装扮 · 上衣 shelf · ~2515 × 1161</div></div>
+        <figcaption>// Category shelves — creatures, outfits, tops/bottoms, props share one grid.</figcaption>
+      </figure>
+    </div>
+
+    <p>Every item rides the same card, which flips through states without changing layout: <strong>默认 (default), 折扣 (discount — e.g. 7折 / 5-day timer), 已解锁 (unlocked), 已启用 (equipped), 免费购买 (free)</strong>, plus purchase caps like <strong>永久限购 0/1</strong> and <strong>日限购 0/3</strong>.</p>
+
+    <!-- REPLACE with: <img src="store-states.png" alt="Item and button states" />  ·  states row, wide -->
+    <div class="img-ph" style="aspect-ratio:16/6; margin:36px 0 0;">
+      <div class="fn">store-states.png</div>
+      <div class="dim">商品状态与购买按钮状态 · 默认 / 折扣 / 已解锁 / 已启用 / 免费 · wide</div>
+    </div>
+  </div>
+
+  <!-- 03 BROWSE AT SCALE -->
+  <div class="section reveal">
+    <div class="section-label">03 — BROWSE AT SCALE</div>
+    <h2>Sort, filter, expand — and pay in any currency</h2>
+    <p>As shelves fill up, browsing has to stay fast. The Shop lets players <strong>change the sort order</strong> (e.g. by price), toggle <strong>仅显示未拥有 (show only unowned)</strong> to hunt for what's missing, handle the <strong>全部拥有 (all-owned)</strong> empty state gracefully, and <strong>expand the grid (展开界面)</strong> to show more items on screen at once instead of endless scrolling.</p>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <!-- REPLACE with: <img src="store-sort-expand.png" alt="Sort, unowned filter, expanded grid" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-sort-expand.png</div><div class="dim">排序 & 未拥有 · 展开界面 · ~2515 × 1161</div></div>
+        <figcaption>// Sort, "unowned only" filter, and the expandable grid.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="store-currency.png" alt="Multi-currency bar expanded" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-currency.png</div><div class="dim">多货币 top bar 展开 · 优先使用 · ~2515 × 1161</div></div>
+        <figcaption>// Currency bar expands to all balances, with 优先使用 (priority-use).</figcaption>
+      </figure>
+    </div>
+
+    <p>The economy runs on several currencies at once — gems, coins, star currency, event tokens. Rather than crowd the header, the top bar shows the essentials and <strong>expands via a chevron</strong> to reveal every balance, with a <strong>优先使用 (priority-use)</strong> option so players control which currency spends first. Any shelf can price in whatever a campaign calls for.</p>
+  </div>
+
+  <!-- 04 PURCHASE & GIFT BOXES -->
+  <div class="section reveal">
+    <div class="section-label">04 — PURCHASE &amp; GIFT BOXES</div>
+    <h2>A tight buy flow, and a chase made honest</h2>
+    <p>The purchase flow is tight: <strong>tap buy → confirm (currency + quantity) → 获得道具 reveal → back to the shelf</strong>. Quick and legible whether it's a single sticker or a bundle.</p>
+
+    <!-- REPLACE with: <img src="store-purchase.png" alt="Purchase confirm and reward reveal" />  ·  flow strip, wide -->
+    <div class="img-ph" style="aspect-ratio:16/7; margin:0 0 12px;">
+      <div class="fn">store-purchase.png</div>
+      <div class="dim">购买流程 · 确认 → 获得道具 · wide flow strip</div>
+    </div>
+
+    <p>The <strong>超级礼包 (super gift pack)</strong> is a chest players buy for a <strong>chance at rare items</strong> — the "maybe this one" pull that flat pricing can't create. Before buying, a <strong>详情与概率 (details &amp; probability)</strong> popup lays out exactly what's inside and the drop rates, so the chase stays exciting without feeling opaque. Buying runs the same confirm → reveal flow, ending on the item pulled.</p>
+
+    <!-- REPLACE with: <img src="store-giftpack.png" alt="Super gift pack and probability popup" />  ·  ~2515 × 1161 -->
+    <div class="img-ph" style="aspect-ratio:var(--screen); margin:36px 0 0;">
+      <div class="fn">store-giftpack.png</div>
+      <div class="dim">购买超级礼包 · 超级礼包详情与概率 · ~2515 × 1161</div>
+    </div>
+  </div>
+
+  <!-- 05 THE ACTIVITY CENTER -->
+  <div class="section reveal">
+    <div class="section-label">05 — THE ACTIVITY CENTER · 奥星活动中心</div>
+    <h2>Restructured so players can find what's live</h2>
+    <p>The activity center is reached from an <strong>entry button on the main screen</strong>, which shows a <strong>red-dot</strong> whenever there's a new event, an update, or an unclaimed reward. It lands on <strong>奥星大事件 (Big Events)</strong> — a seasonal carousel (e.g. "S1初始赛季") where each card carries a 前往 (go-to) into the event.</p>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <!-- REPLACE with: <img src="events-entry.png" alt="Main-screen entry and red-dot" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-entry.png</div><div class="dim">活动入口 · 主界面按钮 + 红点 · ~2515 × 1161</div></div>
+        <figcaption>// Entry — main-screen button with red-dot for new / unclaimed content.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="events-bigevent.png" alt="Big Events landing" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-bigevent.png</div><div class="dim">奥星大事件 · S1初始赛季 · ~2515 × 1161</div></div>
+        <figcaption>// 奥星大事件 — seasonal carousel; each card links via 前往.</figcaption>
+      </figure>
+    </div>
+
+    <p>The core of the redesign is a <strong>two-level navigation</strong>. A left rail of <strong>primary tabs (一级页签, ≤5 chars)</strong> splits events by type — <strong>热门 (Hot), 独一份 (Unique), 日常 (Daily, a world-map of recurring activities), 公告 (Announcements)</strong> — each carrying its own red-dot. Within a type, <strong>secondary tabs (二级页签, ≤6 chars)</strong> list the individual events, and <strong>completed events auto-sink to the bottom</strong> so what's actionable stays on top.</p>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <!-- REPLACE with: <img src="events-hot.png" alt="Hot tab" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-hot.png</div><div class="dim">热门 · ~2515 × 1161</div></div>
+        <figcaption>// 热门 (Hot) — headline live events.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="events-unique.png" alt="Unique tab" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-unique.png</div><div class="dim">独一份 · 实物大奖金榜 · ~2515 × 1161</div></div>
+        <figcaption>// 独一份 (Unique) — limited events, incl. physical-prize rankings.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="events-daily-map.png" alt="Daily map tab" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-daily-map.png</div><div class="dim">日常 · 世界地图 nodes · ~2515 × 1161</div></div>
+        <figcaption>// 日常 (Daily) — a world-map of recurring activities to complete.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="events-announce.png" alt="Announcements tab" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-announce.png</div><div class="dim">公告 · ~2515 × 1161</div></div>
+        <figcaption>// 公告 (Announcements) — news and launch banners.</figcaption>
+      </figure>
+    </div>
+
+    <p>Secondary tabs carry their own status set — <strong>默认 (default), 新 (new), 已完成 (completed)</strong> — plus configurable <strong>special tags (特殊状态)</strong> like 必才, 地图, 火爆, 限时 to flag what's important right now.</p>
+  </div>
+
+  <!-- 06 EVENT TYPES -->
+  <div class="section reveal">
+    <div class="section-label">06 — EVENT TYPES</div>
+    <h2>One frame, very different events inside</h2>
+    <p>The strength of the frame is that wildly different events slot into it. The <strong>七日的约定 (7-Day Pact)</strong> is the daily anchor: each day unlocks a set of tasks (join an open-world event, open 10 chests, play Rhythm Master), each with a <strong>前往 (go-to)</strong> deep-link — often back into the Shop — feeding a cumulative milestone track. Finishing all seven days guarantees a <strong>抽奖卷 (draw ticket)</strong>, redeemable for physical merch.</p>
+    <p>By contrast, <strong>立牌争夺战 (Standee Battle)</strong> is a competitive event — a leaderboard players climb with draws — while the <strong>日常 (Daily) map</strong> holds the lighter, recurring activities. Same navigation, same red-dot and completion rules, very different play.</p>
+
+    <div class="img-grid cols-2">
+      <figure>
+        <!-- REPLACE with: <img src="events-7day.png" alt="7-Day Pact" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-7day.png</div><div class="dim">七日的约定 · daily tasks + milestone · ~2515 × 1161</div></div>
+        <figcaption>// 七日的约定 — per-day tasks, deep-links, milestone track, draw ticket.</figcaption>
+      </figure>
+      <figure>
+        <!-- REPLACE with: <img src="events-standee.png" alt="Standee Battle" />  ·  ~2515 × 1161 -->
+        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-standee.png</div><div class="dim">立牌争夺战 · leaderboard + 抽卡 · ~2515 × 1161</div></div>
+        <figcaption>// 立牌争夺战 — competitive leaderboard event with draws.</figcaption>
+      </figure>
+    </div>
+
+    <!-- REPLACE with: <img src="events-reddot.png" alt="Red-dot logic" />  ·  red-dot rules, wide -->
+    <div class="img-ph" style="aspect-ratio:16/7; margin:36px 0 0;">
+      <div class="fn">events-reddot.png</div>
+      <div class="dim">红点逻辑 · 活动 + 公告 · wide</div>
+    </div>
+  </div>
+
+  <!-- 07 IMPACT -->
+  <div class="section reveal">
+    <div class="section-label">07 — IMPACT</div>
+    <h2>A shop and calendar the team runs without me</h2>
+    <div class="stat-row">
+      <div>
+        <div class="stat-big">1 system</div>
+        <div class="stat-lbl">Shop + events, scaling per item, currency &amp; campaign</div>
+      </div>
+    </div>
+    <p>The result is a store and events layer the team keeps loading with new content without redesigning — new items drop onto the same shelf, new campaigns reuse the same event templates.</p>
+    <div class="outcomes">
+      <div class="outcome-item"><div class="odot"></div><p>One item card carries every state — default, discount, unlocked, equipped, free, and purchase-limited — with no new layout</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Sort, an "unowned only" filter, and an expandable grid keep a growing catalogue browsable</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>An expandable multi-currency bar with priority-use lets any shelf sell in gems, coins, or event tokens</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Super gift packs pair rare-item pulls with a transparent probability screen — the chase stays honest</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>A two-level activity center with red-dot logic and auto-sinking completed events made a growing event list findable — and the 7-Day Pact's deep-links route players back into the Shop</p></div>
+    </div>
+
+    <!-- REPLACE with: <img src="store-impact.png" alt="Live shop and events in play" />  ·  ~2515 × 1161 -->
+    <div class="img-ph" style="aspect-ratio:var(--screen); margin:36px 0 0;">
+      <div class="fn">store-impact.png</div>
+      <div class="dim">IMPACT · live shop + events · ~2515 × 1161</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer reveal">
+  <a href="case-chat.html">← One chat system, every context</a>
+  <a href="case-skullandbones.html">Making a constrained inventory system feel effortless →</a>
+</div>
+
+<script>
+  // Cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+  (function anim() {
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+  document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='0.4'; });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
