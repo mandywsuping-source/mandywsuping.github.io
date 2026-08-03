@@ -341,6 +341,9 @@ blockquote p {
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .reveal.in { opacity: 1; transform: translateY(0); }
 
+/* STANDALONE SECTION IMAGE */
+.section-img { width:100%; display:block; border-radius:var(--radius-sm); border:1px solid var(--border); margin:36px 0; }
+
 /* FLOWCHART (in place of interaction-map images) */
 .flow { display:flex; flex-direction:column; padding:22px 18px; background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius-sm); }
 .flow-node { border:1px solid var(--border); background:var(--bg); border-radius:var(--radius-sm); padding:9px 12px; text-align:center; box-shadow:var(--shadow-sm); }
@@ -392,11 +395,7 @@ blockquote p {
 </div>
 
 <div class="hero-img reveal">
-  <!-- REPLACE with: <img src="store-hero.png" alt="Shop featured page" />  ·  in-game landscape, ~2515 × 1161 -->
-  <div class="img-ph" style="aspect-ratio:var(--screen);">
-    <div class="fn">store-hero.png</div>
-    <div class="dim">HERO · 小卖部 推荐页 · landscape · ~2515 × 1161</div>
-  </div>
+  <img src="store-hero.png" alt="Shop featured page" />
   <p class="caption">// The Shop's featured page — event banner, super gift pack, and character preview.</p>
 </div>
 
@@ -467,24 +466,18 @@ blockquote p {
 
     <div class="img-grid cols-2">
       <figure>
-        <!-- REPLACE with: <img src="store-featured.png" alt="Featured page" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-featured.png</div><div class="dim">推荐页 · ~2515 × 1161</div></div>
+        <img src="store-featured.png" alt="Featured page" />
         <figcaption>// Featured page — collapsible event banner, super gift pack, event guide.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="store-tabs.png" alt="Category shelves" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-tabs.png</div><div class="dim">人类装扮 · 上衣 shelf · ~2515 × 1161</div></div>
+        <img src="store-tabs.png" alt="Category shelves" />
         <figcaption>// Category shelves — creatures, outfits, tops/bottoms, props share one grid.</figcaption>
       </figure>
     </div>
 
     <p>Every item rides the same card, which flips through states without changing layout: <strong>默认 (default), 折扣 (discount — e.g. 7折 / 5-day timer), 已解锁 (unlocked), 已启用 (equipped), 免费购买 (free)</strong>, plus purchase caps like <strong>永久限购 0/1</strong> and <strong>日限购 0/3</strong>.</p>
 
-    <!-- REPLACE with: <img src="store-states.png" alt="Item and button states" />  ·  states row, wide -->
-    <div class="img-ph" style="aspect-ratio:16/6; margin:36px 0 0;">
-      <div class="fn">store-states.png</div>
-      <div class="dim">商品状态与购买按钮状态 · 默认 / 折扣 / 已解锁 / 已启用 / 免费 · wide</div>
-    </div>
+    <img class="section-img" src="store-states.png" alt="Item and button states" style="margin:36px 0 0;" />
   </div>
 
   <!-- 03 BROWSE AT SCALE -->
@@ -495,13 +488,11 @@ blockquote p {
 
     <div class="img-grid cols-2">
       <figure>
-        <!-- REPLACE with: <img src="store-sort-expand.png" alt="Sort, unowned filter, expanded grid" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-sort-expand.png</div><div class="dim">排序 & 未拥有 · 展开界面 · ~2515 × 1161</div></div>
+        <img src="store-sort-expand.png" alt="Sort, unowned filter, expanded grid" />
         <figcaption>// Sort, "unowned only" filter, and the expandable grid.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="store-currency.png" alt="Multi-currency bar expanded" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-currency.png</div><div class="dim">多货币 top bar 展开 · 优先使用 · ~2515 × 1161</div></div>
+        <img src="store-currency.png" alt="Multi-currency bar expanded" />
         <figcaption>// Currency bar expands to all balances, with 优先使用 (priority-use).</figcaption>
       </figure>
     </div>
@@ -515,28 +506,21 @@ blockquote p {
     <h2>A tight buy flow, and a chase made honest</h2>
     <p>The purchase flow is tight: <strong>tap buy → confirm (currency + quantity) → 获得道具 reveal → back to the shelf</strong>. Quick and legible whether it's a single sticker or a bundle.</p>
 
-    <!-- REPLACE with: <img src="store-purchase.png" alt="Purchase confirm and reward reveal" />  ·  flow strip, wide -->
-    <div class="img-ph" style="aspect-ratio:16/7; margin:0 0 12px;">
-      <div class="fn">store-purchase.png</div>
-      <div class="dim">购买流程 · 确认 → 获得道具 · wide flow strip</div>
-    </div>
+    <img class="section-img" src="store-purchase.png" alt="Purchase confirm and reward reveal" style="margin:0 0 12px;" />
 
     <p>The <strong>超级礼包 (super gift pack)</strong> is a chest players buy for a <strong>chance at rare items</strong> — the "maybe this one" pull that flat pricing can't create. Before buying, a <strong>详情与概率 (details &amp; probability)</strong> popup lays out exactly what's inside and the drop rates, so the chase stays exciting without feeling opaque. Buying runs the same confirm → reveal flow, ending on the item pulled.</p>
 
     <div class="img-grid cols-3" style="margin:36px 0 0;">
       <figure>
-        <!-- REPLACE with: <img src="store-giftpack.png" alt="Buy super gift pack" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-giftpack.png</div><div class="dim">购买超级礼包 · ~2515 × 1161</div></div>
+        <img src="store-giftpack.png" alt="Buy super gift pack" />
         <figcaption>// Buy — the super gift pack on the shelf.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="store-giftpack1.png" alt="Details and probability popup" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-giftpack1.png</div><div class="dim">详情与概率 · ~2515 × 1161</div></div>
+        <img src="store-giftpack1.png" alt="Details and probability popup" />
         <figcaption>// Details &amp; probability — what's inside and the drop rates.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="store-giftpack2.png" alt="Reward reveal" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">store-giftpack2.png</div><div class="dim">获得道具 · ~2515 × 1161</div></div>
+        <img src="store-giftpack2.png" alt="Reward reveal" />
         <figcaption>// Reveal — confirm → reveal ends on the item pulled.</figcaption>
       </figure>
     </div>
@@ -550,13 +534,11 @@ blockquote p {
 
     <div class="img-grid cols-2">
       <figure>
-        <!-- REPLACE with: <img src="events-entry.png" alt="Main-screen entry and red-dot" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-entry.png</div><div class="dim">活动入口 · 主界面按钮 + 红点 · ~2515 × 1161</div></div>
+        <img src="events-entry.png" alt="Main-screen entry and red-dot" />
         <figcaption>// Entry — main-screen button with red-dot for new / unclaimed content.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="events-bigevent.png" alt="Big Events landing" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-bigevent.png</div><div class="dim">奥星大事件 · S1初始赛季 · ~2515 × 1161</div></div>
+        <img src="events-bigevent.png" alt="Big Events landing" />
         <figcaption>// 奥星大事件 — seasonal carousel; each card links via 前往.</figcaption>
       </figure>
     </div>
@@ -565,23 +547,19 @@ blockquote p {
 
     <div class="img-grid cols-2">
       <figure>
-        <!-- REPLACE with: <img src="events-hot.png" alt="Hot tab" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-hot.png</div><div class="dim">热门 · ~2515 × 1161</div></div>
+        <img src="events-hot.png" alt="Hot tab" />
         <figcaption>// 热门 (Hot) — headline live events.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="events-unique.png" alt="Unique tab" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-unique.png</div><div class="dim">独一份 · 实物大奖金榜 · ~2515 × 1161</div></div>
+        <img src="events-unique.png" alt="Unique tab" />
         <figcaption>// 独一份 (Unique) — limited events, incl. physical-prize rankings.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="events-daily-map.png" alt="Daily map tab" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-daily-map.png</div><div class="dim">日常 · 世界地图 nodes · ~2515 × 1161</div></div>
+        <img src="events-daily-map.png" alt="Daily map tab" />
         <figcaption>// 日常 (Daily) — a world-map of recurring activities to complete.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="events-announce.png" alt="Announcements tab" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-announce.png</div><div class="dim">公告 · ~2515 × 1161</div></div>
+        <img src="events-announce.png" alt="Announcements tab" />
         <figcaption>// 公告 (Announcements) — news and launch banners.</figcaption>
       </figure>
     </div>
@@ -598,13 +576,11 @@ blockquote p {
 
     <div class="img-grid cols-2">
       <figure>
-        <!-- REPLACE with: <img src="events-7day.png" alt="7-Day Pact" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-7day.png</div><div class="dim">七日的约定 · daily tasks + milestone · ~2515 × 1161</div></div>
+        <img src="events-7day.png" alt="7-Day Pact" />
         <figcaption>// 七日的约定 — per-day tasks, deep-links, milestone track, draw ticket.</figcaption>
       </figure>
       <figure>
-        <!-- REPLACE with: <img src="events-standee.png" alt="Standee Battle" />  ·  ~2515 × 1161 -->
-        <div class="img-ph" style="aspect-ratio:var(--screen);"><div class="fn">events-standee.png</div><div class="dim">立牌争夺战 · leaderboard + 抽卡 · ~2515 × 1161</div></div>
+        <img src="events-standee.png" alt="Standee Battle" />
         <figcaption>// 立牌争夺战 — competitive leaderboard event with draws.</figcaption>
       </figure>
     </div>
@@ -630,11 +606,7 @@ blockquote p {
       <div class="outcome-item"><div class="odot"></div><p>A two-level activity center with red-dot logic and auto-sinking completed events made a growing event list findable — and the 7-Day Pact's deep-links route players back into the Shop</p></div>
     </div>
 
-    <!-- REPLACE with: <img src="store-impact.png" alt="Live shop and events in play" />  ·  ~2515 × 1161 -->
-    <div class="img-ph" style="aspect-ratio:var(--screen); margin:36px 0 0;">
-      <div class="fn">store-impact.png</div>
-      <div class="dim">IMPACT · live shop + events · ~2515 × 1161</div>
-    </div>
+    <img class="section-img" src="store-impact.png" alt="Live shop and events in play" style="margin:36px 0 0;" />
   </div>
 
 </div>
