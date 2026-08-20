@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Map & Navigation — Mandy Wong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-2: #f8f8f7;
+  --border: #e8e8e4;
+  --border-2: #d4d4ce;
+  --text-1: #111110;
+  --text-2: #6b6b66;
+  --text-3: #b4b4ae;
+  --tag-bg: #f0f0ec;
+  --tag-text: #6b6b66;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: 'Geist', -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --turquoise: #2dd4bf;
+  --green: #22c55e;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CURSOR */
+#cursorDot {
+  position: fixed; z-index: 9999;
+  width: 6px; height: 6px;
+  background: var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+#cursorRing {
+  position: fixed; z-index: 9998;
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--text-1);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.2s;
+  opacity: 0.4;
+}
+#cursorRing.hovering { width: 40px; height: 40px; opacity: 0.25; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 60px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-1);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.nav-back {
+  font-size: 14px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-back:hover { color: var(--text-1); }
+
+/* HERO */
+.hero {
+  padding: 120px 40px 64px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow span { opacity: 0.5; }
+
+h1 {
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  margin-bottom: 28px;
+}
+h1 .hl { color: var(--turquoise); }
+
+.hero-intro {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-2);
+  max-width: 620px;
+}
+.hero-intro strong { font-weight: 600; color: var(--text-1); }
+
+/* HERO IMAGE */
+.hero-img {
+  max-width: 760px;
+  margin: 48px auto 0;
+  padding: 0 40px;
+}
+.hero-img img {
+  width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: block;
+}
+.caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 10px;
+}
+
+/* META BAR */
+.meta-bar {
+  max-width: 760px;
+  margin: 56px auto 0;
+  padding: 28px 40px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.meta-item label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.meta-item span {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+
+/* STAT BAR */
+.stat-bar {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.stat-item .stat-num {
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-item .stat-num .hl { color: var(--turquoise); }
+.stat-item .stat-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* CONTENT */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-1);
+  margin-bottom: 20px;
+}
+
+.section p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.section p:last-child { margin-bottom: 0; }
+.section p strong { font-weight: 600; color: var(--text-1); }
+
+/* BLOCKQUOTE */
+blockquote {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: var(--bg-2);
+  border-left: 2px solid var(--border-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+blockquote p {
+  font-size: 15px !important;
+  font-style: italic;
+  color: var(--text-2) !important;
+  margin: 0 !important;
+  line-height: 1.65 !important;
+}
+
+/* IMAGE GRIDS */
+.img-grid { display: grid; gap: 12px; margin: 36px 0; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.img-grid figure img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.img-grid figcaption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* DEMO CARD */
+.demo-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 32px 0;
+}
+.demo-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+
+/* ZOOM DEMO */
+.zoom-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.zoom-tab {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.zoom-tab:hover { border-color: var(--border-2); color: var(--text-1); }
+.zoom-tab.active { background: var(--text-1); color: #fff; border-color: var(--text-1); }
+.zoom-stage img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.zoom-cap {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* OUTCOMES */
+.outcomes { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.odot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-3);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+.outcome-item p {
+  font-size: 14px !important;
+  color: var(--text-1) !important;
+  margin: 0 !important;
+  line-height: 1.55 !important;
+}
+
+/* FOOTER NAV */
+.page-footer {
+  max-width: 760px;
+  margin: 80px auto 0;
+  padding: 36px 40px 80px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-footer a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.page-footer a:hover { color: var(--text-1); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 680px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 96px 20px 48px; }
+  .hero-img { padding: 0 20px; }
+  .meta-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+  .stat-bar { grid-template-columns: 1fr; padding: 24px 20px; gap: 24px; }
+  .content { padding: 0 20px; }
+  .cols-2, .cols-3 { grid-template-columns: 1fr; }
+  .page-footer { padding: 32px 20px 60px; flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mandy Wong</a>
+  <a href="index.html#work" class="nav-back">← All work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero reveal">
+  <div class="eyebrow">
+    SYSTEMS DESIGN <span>·</span> INFORMATION ARCHITECTURE <span>·</span> WAYFINDING <span>·</span> ACCESSIBILITY
+  </div>
+  <h1>One map, three layers, <span class="hl">zero overload</span></h1>
+  <p class="hero-intro">
+    An open-world island map had to hold everything at once: the player, other players, NPCs, missions, points of interest, stations, homes, properties, and stores. At full density it became a wall of overlapping markers. As sole designer, I rebuilt <strong>what the map shows and when</strong>, so players could always orient themselves and find their next destination without decoding a crowded screen.
+  </p>
+</div>
+
+<div class="hero-img reveal">
+  <img src="map-full-island.jpg" alt="Full island map at the farthest zoom" />
+  <p class="caption">// The island at the farthest zoom — only the player, teleport point, and key destinations. Wayfinding first.</p>
+</div>
+
+<div class="meta-bar reveal">
+  <div class="meta-item"><label>Role</label><span>Sole Designer</span></div>
+  <div class="meta-item"><label>Scope</label><span>Map & Navigation</span></div>
+  <div class="meta-item"><label>Discipline</label><span>Systems & IA</span></div>
+  <div class="meta-item"><label>File</label><span>map_navigation.ui</span></div>
+</div>
+
+<!-- STAT BAR -->
+<div class="stat-bar reveal">
+  <div class="stat-item">
+    <div class="stat-num">3<span class="hl">×</span></div>
+    <div class="stat-desc">zoom layers, each revealing only what that distance needs</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">10<span class="hl">+</span></div>
+    <div class="stat-desc">marker types unified into one legible icon system</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">A11Y</div>
+    <div class="stat-desc">color-independent icons, readable by shape even when clustered</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="section reveal">
+    <div class="section-label">01 — LAYERED BY ZOOM</div>
+    <h2>Detail appears only as you look closer</h2>
+    <p>I designed three zoom levels that reveal information progressively. The <strong>furthest layer</strong> shows only events, places, and key destinations for wayfinding. The <strong>middle layer</strong> adds NPCs and mission points. The <strong>closest layer</strong> surfaces resources, friends, and property markers.</p>
+    <p>Detail appears only as the player looks closer, so the map answers <strong>"where do I go"</strong> before it ever answers "what is everything here." The same screen serves orientation and detail without ever showing both at once.</p>
+
+    <div class="demo-card">
+      <div class="demo-label">// map_navigation.ui — progressive reveal by zoom level</div>
+      <div class="zoom-tabs">
+        <div class="zoom-tab active" data-zoom="far">Far · Wayfinding</div>
+        <div class="zoom-tab" data-zoom="mid">Mid · + NPCs & Missions</div>
+        <div class="zoom-tab" data-zoom="close">Close · + Resources & Homes</div>
+      </div>
+      <div class="zoom-stage">
+        <img id="zoomImg" src="map-zoom-far.jpg" alt="Map at selected zoom level" />
+      </div>
+      <p class="zoom-cap" id="zoomCap">// Far — the whole island. Only events, key destinations, and the teleport spawn point.</p>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">02 — THE ICON SYSTEM</div>
+    <h2>A marker language, not just markers</h2>
+    <p>I built a full marker language covering the player, other players, NPCs (with avatar), mission points, teleport, points of interest, puzzle games, stations, and location types — home, property, and store. Every marker type carries a distinct meaning at a glance.</p>
+    <p>I led the UI team to keep every icon legible by <strong>shape and silhouette rather than color</strong>, so the system stays readable and accessible even where markers cluster tightly. Color reinforces meaning; it never carries it alone.</p>
+    <div class="img-grid cols-2">
+      <figure>
+        <img src="map-icon-legend.png" alt="Map point icon legend" />
+        <figcaption>// Point markers — player, tracked task tags, mission point, teleport, POI, puzzle games, station, other players, NPC.</figcaption>
+      </figure>
+      <figure>
+        <img src="map-location-legend.png" alt="Location icon legend" />
+        <figcaption>// Location markers — home, other properties, stores. Distinct by silhouette before color.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">03 — INTERACTION STATES</div>
+    <h2>One popup pattern, every marker</h2>
+    <p>I designed the marker popups as a complete state set: <strong>track an NPC</strong>, <strong>teleport to a location</strong>, an <strong>untrack</strong> state, and a <strong>no-description</strong> fallback for markers that carry no copy.</p>
+    <p>Every marker type shares one consistent popup pattern, so interaction stays predictable no matter what the player taps. The action label changes with context — Track, Teleport, Untrack — but the structure never does.</p>
+    <div class="img-grid cols-2">
+      <figure>
+        <img src="map-popup-states.png" alt="Popup interaction states" />
+        <figcaption>// The full popup state set — NPC tracking, location tracking, no-description, and the untrack state.</figcaption>
+      </figure>
+      <figure>
+        <img src="map-popup-live.jpg" alt="NPC popup live on the map" />
+        <figcaption>// A popup in context — the same pattern rendered live over the map, anchored to its marker.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-label">04 — OUTCOMES</div>
+    <h2>Orientation before information</h2>
+    <div class="outcomes">
+      <div class="outcome-item"><div class="odot"></div><p>Three zoom layers replaced a single overloaded view — players orient before they parse detail</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>10+ marker types unified into one icon language, legible by shape even at full density</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>Color-independent icons keep the map accessible where markers cluster</p></div>
+      <div class="outcome-item"><div class="odot"></div><p>One consistent popup pattern across every marker type — interaction stays predictable</p></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer reveal">
+  <a href="index.html#work">← All work</a>
+  <a href="case-construction.html">A room editor you build with your hands →</a>
+</div>
+
+<script>
+  // Zoom layer switcher
+  const zoomData = {
+    far:   { src: 'map-zoom-far.jpg',   cap: '// Far — the whole island. Only events, key destinations, and the teleport spawn point.' },
+    mid:   { src: 'map-zoom-mid.jpg',   cap: '// Mid — the island fills the frame. NPCs, mission points, and property markers appear.' },
+    close: { src: 'map-zoom-close.jpg', cap: '// Close — zoomed into town. Resources, friends, stores, and every home surface.' }
+  };
+  const zoomImg = document.getElementById('zoomImg');
+  const zoomCap = document.getElementById('zoomCap');
+  document.querySelectorAll('.zoom-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.zoom-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const d = zoomData[tab.dataset.zoom];
+      zoomImg.style.opacity = '0';
+      setTimeout(() => {
+        zoomImg.src = d.src;
+        zoomCap.textContent = d.cap;
+        zoomImg.style.opacity = '1';
+      }, 150);
+    });
+  });
+  zoomImg.style.transition = 'opacity 0.2s';
+
+  // Cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+  (function anim() {
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a, .zoom-tab').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+  document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='0.4'; });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
